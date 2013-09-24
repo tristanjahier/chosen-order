@@ -1,0 +1,77 @@
+﻿<!doctype html>
+<html>
+<head>
+	<title>Chosen order handler : jQuery plugin</title>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script type="text/javascript" src="vendor/chosen/chosen.jquery.min.js"></script>
+	<script type="text/javascript" src="chosen.order.jquery.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="vendor/chosen/chosen.min.css">
+	<link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+</head>
+<body>
+	<article class="container">
+		<h1>Chosen order handler <small>jQuery plugin</small></h1>
+		<a href="prototype.html">Checkout Prototype version of the plugin</a>
+		<hr>
+		<p>
+			<div class="input-group">
+				<span class="input-group-addon">Fruits &laquo; à la française &raquo;</span>
+				<select id="fruit-list" class="form-control" multiple style="width: 450px;">
+					<option value="banane">Banane</option>
+					<option value="pomme">Pomme</option>
+					<option value="poire">Poire</option>
+					<option value="ananas" selected>Ananas</option>
+					<option value="kiwi" selected>Kiwi</option>
+					<option value="goyave">Goyave</option>
+					<option value="abricot">Abricot</option>
+					<option value="fraise" selected>Fraise</option>
+					<option value="framboise">Framboise</option>
+					<option value="avocat" selected>Avocat</option>
+				</select>
+			</div>
+		</p>
+		<hr>
+		<div class="row">
+			<div class="col-lg-3 col-sm-6">
+				<button type="button" id="get-order" class="btn btn-primary" style="width: 150px">Retrieve order</button>
+				<br><br>
+				<ol id="order-list"></ol>
+			</div>
+			<div class="col-lg-3 col-lg-offset-1 col-sm-6">
+				<button type="button" id="set-order" class="btn btn-success" style="width: 150px">Set order</button>
+				<br><br>
+				<input id="order" type="text" class="form-control" value="poire,  ananas, banane  ,kiwi " style="width: 250px;">
+			</div>
+		</div>
+		
+	</article>
+
+
+	<script type="text/javascript">
+		var MY_SELECT = $('#fruit-list');
+		MY_SELECT.chosen();
+
+		$('#get-order').click(function() {
+			// Functional
+			// var selection = ChosenOrder.getSelectionOrder(document.getElementById('fruit-list'));
+			// Object-oriented
+			var selection = $('#fruit-list').getSelectionOrder();
+
+			$('#order-list').empty();
+			$(selection).each(function(i) {
+				$('#order-list').append("<li>"+selection[i]+"</li>");
+			});
+		});
+
+		$('#set-order').click(function() {
+			// Functional
+			// ChosenOrder.setSelectionOrder($('#fruit-list'), $('#order').val().split(','), true);
+			// Object-oriented
+			$('#fruit-list').setSelectionOrder($('#order').val().split(','), true);
+		})
+
+		// $('#get-order').click();
+		// $('#set-order').click();
+	</script>
+</body>
+</html>
