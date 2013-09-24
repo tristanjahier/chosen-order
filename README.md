@@ -88,9 +88,11 @@ ChosenOrder.setSelectionOrder($('#my-list'), order);
 $('#my-list').setSelectionOrder(order);
 ```
 
-`setSelectionOrder()` function takes an optional argument : `force`, which is a boolean. Default value is `false`. Set it to `true` if you plan to pass an array of ordered values that are not necessarily all selected yet.
+`setSelectionOrder()` takes an array **an array of ordered values**.
 
-For example, let's say we introduce *Cacatac* and *Ratacat-mic* and we get rid of *Zorp*:
+It also takes an optional argument : `force`, which is a boolean. Default value is `false`. Set it to `true` if you plan to pass an array of ordered values that are not necessarily all selected yet.
+
+For example, let's introduce *Cacatac* and *Ratacat-mic* and get rid of *Zorp*:
 
 	var order = ['cacatac', 'plop', 'ratacat-mic', 'fianle'];
 	$('#my-list').setSelectionOrder(order, true);
