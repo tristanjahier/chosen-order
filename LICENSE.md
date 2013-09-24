@@ -1,5 +1,7 @@
 # Chosen Order plugin
 
+-------------------------
+
 THIS SOFTWARE IS NOT ASSOCIATED WITH **HARVEST** IN ANY WAY.
 
 -------------------------

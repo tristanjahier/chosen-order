@@ -6,13 +6,15 @@ Typically, you may want to retrieve the order in which the elements were selecte
 
 Created by [Tristan Jahier](http://tristan-jahier.fr).
 
-Chosen is a library originally created by [Patrick Filler](http://patrickfiller.com) for [Harvest](http://getharvest.com/).
 
 -------------------------
 
 THIS SOFTWARE IS NOT ASSOCIATED WITH **HARVEST** IN ANY WAY.
 
+Chosen is a library originally created by [Patrick Filler](http://patrickfiller.com) for [Harvest](http://getharvest.com/).
+
 -------------------------
+
 
 ## Compatibility
 
@@ -21,7 +23,23 @@ THIS SOFTWARE IS NOT ASSOCIATED WITH **HARVEST** IN ANY WAY.
 - Chosen : `1.0.0+`
 
 
+## Demo
+
+You can see a demonstration of the plugin at : [http://labo.tristan-jahier.fr/chosen_order](http://labo.tristan-jahier.fr/chosen_order)
+
+
 ## Usage
+
+Download the compiled Javascript files (developement and minified versions are available) from the `dist/` directory, or compile the project yourself.
+
+Import the Javascript file in your HTML document. Choose the version which corresponds to the framework of your choice: jQuery or Prototype.
+
+	<script type="text/javascript" src="chosen.order.jquery.min.js"></script>
+
+or
+
+	<script type="text/javascript" src="chosen.order.proto.min.js"></script>
+
 
 Let's say you have a select element into your page, which is handled by Chosen:
 
@@ -41,26 +59,15 @@ So, you have 3 values selected : *Fianle*, *Plop* and *Nioup*. Chosen UI display
 
 ![Chosen unordered elements](img/chosen_unordered.png)
 
-Import the Javascript file in your HTML document. Choose the version which corresponds to the framework of your choice: jQuery or Prototype.
+Chosen Order provides two public functions, in two flavors each.
 
-	<script type="text/javascript" src="chosen.order.jquery.min.js"></script>
+- **Functional flavor** is a direct call to ChosenOrder static functions.
 
-or
+		ChosenOrder.theFreakingFunction(element, params);
 
-	<script type="text/javascript" src="chosen.order.proto.min.js"></script>
+- **Object-oriented flavor** is another approach that extends the objects.
 
-
-Chosen Order provides 2 public functions, in 2 flavors each.
-
-Functional way is a direct call to ChosenOrder class\* static functions.
-
-	ChosenOrder.theFreakingFunction(element, params);
-
-Object-oriented way is another approach that extends the objects.
-
-	$(element).theFreakingFunction(params);
-
-*Yes, classes do not exist in Javascript. Well, it's just a function with other functions in it.
+		$(element).theFreakingFunction(params);
 
 
 ### Retrieving the order
@@ -75,6 +82,7 @@ var selection = $('#my-list').getSelectionOrder();
 
 `getSelectionOrder()` takes no argument and **returns an array of the selected values** in the order they appear in Chosen UI.
 For the above example, it should return `["fianle", "plop", "nioup"]`.
+
 
 ### Setting the order
 
