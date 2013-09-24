@@ -2,7 +2,7 @@
 
 Chosen Order is a plugin for Chosen which aims to provide functions to handle the order of the selection.
 
-Typically, you may want to retrieve the order in which the elements were selected with Chosen. You also may want to force the order in which Chosen displays the select options. Unfortunately, Chosen does not handle that, because DOM Multiple Select elements do not have any notion of order of selection.
+Typically, you may want to retrieve the order in which the elements were selected with Chosen. You also may want to force the order in which Chosen displays the selected options. Unfortunately, Chosen does not handle that, because DOM Multiple Select elements do not have any notion of order of selection.
 
 Created by [Tristan Jahier](http://tristan-jahier.fr).
 
@@ -103,6 +103,14 @@ It forces the selection of the values for the Select element and Chosen UI befor
 
 
 ## Technical aspects
+
+Chosen Order does several precaution checks on the arguments. It checks if the element is a correct **multiple select element, with a matching Chosen UI**. If this is not the case, it outputs an error in the console:
+
+	ChosenOrder::getSelectionOrder: first argument must be a valid HTML Multiple Select element that has been Chosenified!
+
+It also checks if the order array is a true Array object, else, it screams:
+
+	ChosenOrder::setSelectionOrder: second argument must be an Array!
 
 Chosen Order handles both DOM raw elements and jQuery objects. For example, these 2 lines will work:
 

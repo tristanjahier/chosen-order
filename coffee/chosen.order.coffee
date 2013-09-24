@@ -2,8 +2,8 @@ class AbstractChosenOrder
 
   # Plugin errors messages
   ERRORS = {
-    invalid_select_element: "ChosenOrder::{{function}}: first argument must be a valid HTML Multiple Select element that has been Chosenified !",
-    invalid_selection_array: "ChosenOrder::{{function}}: second argument must be an Array !"
+    invalid_select_element: "ChosenOrder::{{function}}: first argument must be a valid HTML Multiple Select element that has been Chosenified!",
+    invalid_selection_array: "ChosenOrder::{{function}}: second argument must be an Array!"
   }
 
 
