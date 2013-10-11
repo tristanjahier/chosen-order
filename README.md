@@ -34,16 +34,19 @@ Download the compiled Javascript files (developement and minified versions are a
 
 Import the Javascript file in your HTML document. Choose the version which corresponds to the framework of your choice: jQuery or Prototype.
 
-	<script type="text/javascript" src="chosen.order.jquery.min.js"></script>
+```html
+<script type="text/javascript" src="chosen.order.jquery.min.js"></script>
+```
 
 or
 
-	<script type="text/javascript" src="chosen.order.proto.min.js"></script>
-
+```html
+<script type="text/javascript" src="chosen.order.proto.min.js"></script>
+```
 
 Let's say you have a select element into your page, which is handled by Chosen:
 
-```
+```html
 <select id="my-list" multiple>
 	<option value="fianle" selected>Fianle</option>
 	<option value="plop" selected>Plop</option>
@@ -63,16 +66,19 @@ Chosen Order provides two public functions, in two flavors each.
 
 - **Functional flavor** is a direct call to ChosenOrder static functions.
 
-		ChosenOrder.theFreakingFunction(element, params);
+	```javascript
+	ChosenOrder.theFreakingFunction(element, params);
+	```
 
 - **Object-oriented flavor** is another approach that extends the objects.
-
-		$(element).theFreakingFunction(params);
-
+	
+	```javascript
+	$(element).theFreakingFunction(params);
+	```
 
 ### Retrieving the order
 
-```
+```javascript
 // Functional flavor
 var selection = ChosenOrder.getSelectionOrder(document.getElementById('my-list'));
 
@@ -86,7 +92,7 @@ For the above example, it should return `["fianle", "plop", "nioup"]`.
 
 ### Setting the order
 
-```
+```javascript
 var order = ['nioup', 'plop', 'fianle']; // Ordered options values
 
 // Functional flavor
@@ -102,8 +108,10 @@ It also takes an optional argument : `force`, which is a boolean. Default value 
 
 For example, let's introduce *Cacatac* and *Ratacat-mic* and get rid of *Zorp*:
 
-	var order = ['cacatac', 'plop', 'ratacat-mic', 'fianle'];
-	$('#my-list').setSelectionOrder(order, true);
+```javascript
+var order = ['cacatac', 'plop', 'ratacat-mic', 'fianle'];
+$('#my-list').setSelectionOrder(order, true);
+```
 
 It forces the selection of the values for the Select element and Chosen UI before ordering them.
 
@@ -122,7 +130,9 @@ It also checks if the order array is a true Array object, else, it screams:
 
 Chosen Order handles both DOM raw elements and jQuery objects. For example, these 2 lines will work:
 
-	ChosenOrder.getSelectionOrder(document.getElementById('my-list'));
-	ChosenOrder.getSelectionOrder($('#my-list'));
+```javascript
+ChosenOrder.getSelectionOrder(document.getElementById('my-list'));
+ChosenOrder.getSelectionOrder($('#my-list'));
+```
 
 `setSelectionOrder()` trims the values of the order array. 
