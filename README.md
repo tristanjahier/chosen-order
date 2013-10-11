@@ -102,7 +102,7 @@ ChosenOrder.setSelectionOrder($('#my-list'), order);
 $('#my-list').setSelectionOrder(order);
 ```
 
-`setSelectionOrder()` takes an array **an array of ordered values**.
+`setSelectionOrder()` takes **an array of ordered values**.
 
 It also takes an optional argument : `force`, which is a boolean. Default value is `false`. Set it to `true` if you plan to pass an array of ordered values that are not necessarily all selected yet.
 
