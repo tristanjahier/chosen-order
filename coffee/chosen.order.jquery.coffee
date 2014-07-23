@@ -11,7 +11,7 @@ $.fn.extend({
 
 
 class @ChosenOrder extends AbstractChosenOrder
-  
+
   # Attribute for the rank of the option into the original Select element
   @relAttributeName = 'data-option-array-index';
 
