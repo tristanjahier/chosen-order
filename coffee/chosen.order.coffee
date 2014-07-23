@@ -56,10 +56,11 @@ class AbstractChosenOrder
   # Retrieve order of the <select> <options>
   @getSelectionOrder = (select) ->
     select = retrieveDOMElement select if retrieveDOMElement? # Ensure to handle a true DOM element
+    order = []
+
     if validMultipleSelectElement(select) and isChosenified(select)
       chosen_ui = getChosenUIElement select
       chosen_options = chosen_ui.getElementsByClassName 'search-choice'
-      order = []
 
       for opt in chosen_options
         close_btn = opt.getElementsByClassName('search-choice-close')[0]
@@ -68,9 +69,10 @@ class AbstractChosenOrder
         option = options[rel]
         order.push option.value
 
-      return order
     else
       console.error ERRORS.invalid_select_element.replace('{{function}}', 'getSelectionOrder')
+
+    return order
 
 
   # ////////////////////////////////////////////////

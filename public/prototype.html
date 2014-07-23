@@ -22,7 +22,7 @@
         <p>
             <div class="input-group">
                 <span class="input-group-addon">Fruits &laquo; à la française &raquo;</span>
-                <select id="fruit-list" class="form-control" multiple style="width: 450px;">
+                <select id="fruit-list" class="form-control chosen" multiple style="width: 450px;">
                     <option value="banane">Banane</option>
                     <option value="pomme">Pomme</option>
                     <option value="poire">Poire</option>
@@ -36,7 +36,6 @@
                 </select>
             </div>
         </p>
-        <hr>
         <div class="row">
             <div class="col-lg-3 col-sm-6">
                 <button type="button" id="get-order" class="btn btn-primary" style="width: 150px">Retrieve order</button>
@@ -49,31 +48,48 @@
                 <input id="order" type="text" class="form-control" value="poire,  ananas, banane  ,kiwi " style="width: 250px;">
             </div>
         </div>
-
+        <hr>
+        <p>
+            <div class="input-group">
+                <span class="input-group-addon">Another multiple select</span>
+                <select class="form-control chosen" multiple style="width: 450px;">
+                    <option value="1" selected>Option 1</option>
+                    <option value="2">Option 2</option>
+                    <option value="3">Option 3</option>
+                    <option value="4" selected>Option 4</option>
+                    <option value="5" selected>Option 5</option>
+                </select>
+            </div>
+        </p>
     </article>
 
     <script type="text/javascript">
-        new Chosen($('fruit-list'));
+        // Chosenify every multiple select DOM elements with class 'chosen'
+        $$('select[multiple].chosen').each(function(element) { new Chosen(element); });
+        var MY_SELECT = $$('select[multiple].chosen')[0];
 
-        $('get-order').on('click', 'button', function(event, element) {
+        $('get-order').on('click', 'button', function(event, element)
+        {
             // Functional
-            // var selection = ChosenOrder.getSelectionOrder(document.getElementById('fruit-list'));
+            // var selection = ChosenOrder.getSelectionOrder(MY_SELECT);
             // Object-oriented
-            var selection = $('fruit-list').getSelectionOrder();
+            var selection = MY_SELECT.getSelectionOrder();
 
-            while ($('order-list').hasChildNodes()) {
+            while ($('order-list').hasChildNodes())
                 $('order-list').removeChild($('order-list').lastChild);
-            }
-            $(selection).each(function(fruit) {
+
+            $(selection).each(function(fruit)
+            {
                 $('order-list').appendChild(new Element('li').update(fruit));
             });
         });
 
-        $('set-order').on('click', 'button', function(event, element) {
+        $('set-order').on('click', 'button', function(event, element)
+        {
             // Functional
-            // ChosenOrder.setSelectionOrder(document.getElementById('fruit-list'), $('order').value.split(','), true);
+            // ChosenOrder.setSelectionOrder(MY_SELECT, $('order').value.split(','), true);
             // Object-oriented
-            $('fruit-list').setSelectionOrder($('order').value.split(','), true);
+            MY_SELECT.setSelectionOrder($('order').value.split(','), true);
         })
 
         // $('get-order').click();

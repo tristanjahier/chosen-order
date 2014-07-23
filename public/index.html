@@ -22,7 +22,7 @@
         <p>
             <div class="input-group">
                 <span class="input-group-addon">Fruits &laquo; à la française &raquo;</span>
-                <select id="fruit-list" class="form-control" multiple style="width: 450px;">
+                <select id="fruit-list" class="form-control chosen" multiple style="width: 450px;">
                     <option value="banane">Banane</option>
                     <option value="pomme">Pomme</option>
                     <option value="poire">Poire</option>
@@ -36,7 +36,6 @@
                 </select>
             </div>
         </p>
-        <hr>
         <div class="row">
             <div class="col-lg-3 col-sm-6">
                 <button type="button" id="get-order" class="btn btn-primary" style="width: 150px">Retrieve order</button>
@@ -49,31 +48,46 @@
                 <input id="order" type="text" class="form-control" value="poire,  ananas, banane  ,kiwi " style="width: 250px;">
             </div>
         </div>
-
+        <hr>
+        <p>
+            <div class="input-group">
+                <span class="input-group-addon">Another multiple select</span>
+                <select class="form-control chosen" multiple style="width: 450px;">
+                    <option value="1" selected>Option 1</option>
+                    <option value="2">Option 2</option>
+                    <option value="3">Option 3</option>
+                    <option value="4" selected>Option 4</option>
+                    <option value="5" selected>Option 5</option>
+                </select>
+            </div>
+        </p>
     </article>
 
-
     <script type="text/javascript">
-        var MY_SELECT = $('#fruit-list');
-        MY_SELECT.chosen();
+        // Chosenify every multiple select DOM elements with class 'chosen'
+        $('select[multiple].chosen').chosen();
+        var MY_SELECT = $($('select[multiple].chosen').get(0));
 
-        $('#get-order').click(function() {
+        $('#get-order').click(function()
+        {
             // Functional
-            // var selection = ChosenOrder.getSelectionOrder(document.getElementById('fruit-list'));
+            // var selection = ChosenOrder.getSelectionOrder(MY_SELECT);
             // Object-oriented
-            var selection = $('#fruit-list').getSelectionOrder();
+            var selection = MY_SELECT.getSelectionOrder();
 
             $('#order-list').empty();
-            $(selection).each(function(i) {
+            $(selection).each(function(i)
+            {
                 $('#order-list').append("<li>"+selection[i]+"</li>");
             });
         });
 
-        $('#set-order').click(function() {
+        $('#set-order').click(function()
+        {
             // Functional
-            // ChosenOrder.setSelectionOrder($('#fruit-list'), $('#order').val().split(','), true);
+            // ChosenOrder.setSelectionOrder(MY_SELECT, $('#order').val().split(','), true);
             // Object-oriented
-            $('#fruit-list').setSelectionOrder($('#order').val().split(','), true);
+            MY_SELECT.setSelectionOrder($('#order').val().split(','), true);
         })
 
         // $('#get-order').click();

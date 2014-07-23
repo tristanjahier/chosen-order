@@ -65,10 +65,10 @@
       if (typeof retrieveDOMElement !== "undefined" && retrieveDOMElement !== null) {
         select = retrieveDOMElement(select);
       }
+      order = [];
       if (validMultipleSelectElement(select) && isChosenified(select)) {
         chosen_ui = getChosenUIElement(select);
         chosen_options = chosen_ui.getElementsByClassName('search-choice');
-        order = [];
         for (_i = 0, _len = chosen_options.length; _i < _len; _i++) {
           opt = chosen_options[_i];
           close_btn = opt.getElementsByClassName('search-choice-close')[0];
@@ -81,10 +81,10 @@
           option = options[rel];
           order.push(option.value);
         }
-        return order;
       } else {
-        return console.error(ERRORS.invalid_select_element.replace('{{function}}', 'getSelectionOrder'));
+        console.error(ERRORS.invalid_select_element.replace('{{function}}', 'getSelectionOrder'));
       }
+      return order;
     };
 
     AbstractChosenOrder.setSelectionOrder = function(select, order, force) {
