@@ -17,29 +17,34 @@
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
   AbstractChosenOrder = (function() {
-    var ERRORS, forceSelection, getChosenUIElement, insertAt, isChosenified, validMultipleSelectElement;
+    var ERRORS, forceSelection, getChosenUIContainer, insertAt, isChosenified, isValidMultipleSelectElement;
 
     function AbstractChosenOrder() {}
 
     ERRORS = {
       invalid_select_element: "ChosenOrder::{{function}}: first argument must be a valid HTML Multiple Select element that has been Chosenified!",
-      invalid_selection_array: "ChosenOrder::{{function}}: second argument must be an Array!"
+      invalid_selection_array: "ChosenOrder::{{function}}: second argument must be an Array!",
+      unreachable_chosen_container: "ChosenOrder::{{function}}: could not find the Chosen UI container! To solve the problem, try adding an \"id\" attribute to your <select> element."
     };
 
     insertAt = function(node, index, parent) {
       return parent.insertBefore(node, parent.children[index].nextSibling);
     };
 
-    validMultipleSelectElement = function(element) {
+    isValidMultipleSelectElement = function(element) {
       return element !== null && typeof element !== "undefined" && element.nodeName === "SELECT" && element.multiple;
     };
 
-    getChosenUIElement = function(select) {
-      return document.getElementById(select.id.replace(/-/g, "_") + "_chosen");
+    getChosenUIContainer = function(select) {
+      if (select.id !== "") {
+        return document.getElementById(select.id.replace(/-/g, "_") + "_chosen");
+      } else {
+        return searchChosenUIContainer(select);
+      }
     };
 
     isChosenified = function(select) {
-      return getChosenUIElement(select) != null;
+      return getChosenUIContainer(select) != null;
     };
 
     forceSelection = function(selection) {
@@ -62,61 +67,69 @@
 
     AbstractChosenOrder.getSelectionOrder = function(select) {
       var chosen_options, chosen_ui, close_btn, opt, option, options, order, rel, _i, _len;
-      if (typeof retrieveDOMElement !== "undefined" && retrieveDOMElement !== null) {
-        select = retrieveDOMElement(select);
+      if (typeof getDOMElement !== "undefined" && getDOMElement !== null) {
+        select = getDOMElement(select);
       }
       order = [];
-      if (validMultipleSelectElement(select) && isChosenified(select)) {
-        chosen_ui = getChosenUIElement(select);
-        chosen_options = chosen_ui.getElementsByClassName('search-choice');
-        for (_i = 0, _len = chosen_options.length; _i < _len; _i++) {
-          opt = chosen_options[_i];
-          close_btn = opt.getElementsByClassName('search-choice-close')[0];
-          if (close_btn != null) {
-            rel = close_btn.getAttribute(this.relAttributeName);
-          }
-          options = Array.prototype.filter.call(select.childNodes, function(o) {
-            return o.nodeName === 'OPTION';
-          });
-          option = options[rel];
-          order.push(option.value);
-        }
-      } else {
+      if (!isValidMultipleSelectElement(select)) {
         console.error(ERRORS.invalid_select_element.replace('{{function}}', 'getSelectionOrder'));
+        return order;
+      }
+      chosen_ui = getChosenUIContainer(select);
+      if (chosen_ui == null) {
+        console.error(ERRORS.unreachable_chosen_container.replace('{{function}}', 'getSelectionOrder'));
+        return order;
+      }
+      chosen_options = chosen_ui.getElementsByClassName('search-choice');
+      for (_i = 0, _len = chosen_options.length; _i < _len; _i++) {
+        opt = chosen_options[_i];
+        close_btn = opt.getElementsByClassName('search-choice-close')[0];
+        if (close_btn != null) {
+          rel = close_btn.getAttribute(this.relAttributeName);
+        }
+        options = Array.prototype.filter.call(select.childNodes, function(o) {
+          return o.nodeName === 'OPTION';
+        });
+        option = options[rel];
+        order.push(option.value);
       }
       return order;
     };
 
     AbstractChosenOrder.setSelectionOrder = function(select, order, force) {
       var chosen_choices, chosen_options, chosen_ui, i, opt, option, rel, relAttributeName, _i, _len, _results;
-      if (typeof retrieveDOMElement !== "undefined" && retrieveDOMElement !== null) {
-        select = retrieveDOMElement(select);
+      if (typeof getDOMElement !== "undefined" && getDOMElement !== null) {
+        select = getDOMElement(select);
       }
-      if (validMultipleSelectElement(select) && isChosenified(select)) {
-        if (order instanceof Array) {
-          order = order.map(Function.prototype.call, String.prototype.trim);
-          if ((force != null) && force === true) {
-            forceSelection.call(select, order);
-          }
-          chosen_ui = getChosenUIElement(select);
-          _results = [];
-          for (i = _i = 0, _len = order.length; _i < _len; i = ++_i) {
-            opt = order[i];
-            rel = Array.prototype.indexOf.call(select, select.querySelector("option[value=\"" + opt + "\"]"));
-            chosen_options = chosen_ui.getElementsByClassName('search-choice');
-            relAttributeName = this.relAttributeName;
-            option = Array.prototype.filter.call(chosen_options, function(o) {
-              return o.querySelector("a.search-choice-close[" + relAttributeName + "=\"" + rel + "\"]") != null;
-            })[0];
-            chosen_choices = chosen_ui.querySelector("ul.chosen-choices");
-            _results.push(insertAt(option, i, chosen_ui.querySelector('ul.chosen-choices')));
-          }
-          return _results;
-        } else {
-          return console.error(ERRORS.invalid_selection_array.replace('{{function}}', 'setSelectionOrder'));
+      if (!isValidMultipleSelectElement(select)) {
+        console.error(ERRORS.invalid_select_element.replace('{{function}}', 'setSelectionOrder'));
+        return;
+      }
+      chosen_ui = getChosenUIContainer(select);
+      if (chosen_ui == null) {
+        console.error(ERRORS.unreachable_chosen_container.replace('{{function}}', 'setSelectionOrder'));
+        return;
+      }
+      if (order instanceof Array) {
+        order = order.map(Function.prototype.call, String.prototype.trim);
+        if ((force != null) && force === true) {
+          forceSelection.call(select, order);
         }
+        _results = [];
+        for (i = _i = 0, _len = order.length; _i < _len; i = ++_i) {
+          opt = order[i];
+          rel = Array.prototype.indexOf.call(select, select.querySelector("option[value=\"" + opt + "\"]"));
+          chosen_options = chosen_ui.getElementsByClassName('search-choice');
+          relAttributeName = this.relAttributeName;
+          option = Array.prototype.filter.call(chosen_options, function(o) {
+            return o.querySelector("a.search-choice-close[" + relAttributeName + "=\"" + rel + "\"]") != null;
+          })[0];
+          chosen_choices = chosen_ui.querySelector("ul.chosen-choices");
+          _results.push(insertAt(option, i, chosen_ui.querySelector('ul.chosen-choices')));
+        }
+        return _results;
       } else {
-        return console.error(ERRORS.invalid_select_element.replace('{{function}}', 'setSelectionOrder'));
+        return console.error(ERRORS.invalid_selection_array.replace('{{function}}', 'setSelectionOrder'));
       }
     };
 
@@ -142,6 +155,10 @@
     }
 
     ChosenOrder.relAttributeName = "rel";
+
+    parent.searchChosenUIContainer = function(element) {
+      return element.next(".chosen-container.chosen-container-multi");
+    };
 
     parent.triggerEvent = function(target, event_name) {
       return Event.fire($(target), event_name);
