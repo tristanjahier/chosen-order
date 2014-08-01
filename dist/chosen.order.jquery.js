@@ -176,7 +176,7 @@
       if ($(element).data("chosen") != null) {
         return $(element).data("chosen").container[0];
       } else {
-        return element.next(".chosen-container.chosen-container-multi");
+        return $(element).next(".chosen-container.chosen-container-multi").get(0);
       }
     };
 

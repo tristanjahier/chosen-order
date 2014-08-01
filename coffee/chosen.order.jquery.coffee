@@ -37,7 +37,7 @@ class @ChosenOrder extends AbstractChosenOrder
     if $(element).data("chosen")?
       $(element).data("chosen").container[0]
     else
-      element.next(".chosen-container.chosen-container-multi")
+      $(element).next(".chosen-container.chosen-container-multi").get(0)
 
 
   # ////////////////////////////////////////////////////////////////
