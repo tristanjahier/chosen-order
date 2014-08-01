@@ -27,6 +27,12 @@ Chosen is a library originally created by [Patrick Filler](http://patrickfiller.
 
 You can see a demonstration of the plugin at : [http://labo.tristan-jahier.fr/chosen_order](http://labo.tristan-jahier.fr/chosen_order)
 
+#### Hey! Demo in the `public/` directory does not work!!!
+
+Use the `grunt` command to compile the project, and a task will fill this directory with the freshly built Javascript files.
+
+If you have no idea what I'm talking about, just copy `chosen.order.jquery.min.js` and `chosen.order.proto.min.js` from `dist/` to `public/`.
+
 
 ## Usage
 
@@ -71,7 +77,7 @@ Chosen Order provides two public functions, in two flavors each.
 	```
 
 - **Object-oriented flavor** is another approach that extends the objects.
-	
+
 	```javascript
 	$(element).theFreakingFunction(params);
 	```
@@ -135,4 +141,4 @@ ChosenOrder.getSelectionOrder(document.getElementById('my-list'));
 ChosenOrder.getSelectionOrder($('#my-list'));
 ```
 
-`setSelectionOrder()` trims the values of the order array. 
+`setSelectionOrder()` trims the values of the order array.
