@@ -36,7 +36,7 @@ If you have no idea what I'm talking about, just copy `chosen.order.jquery.min.j
 
 ## Usage
 
-Download the compiled Javascript files (developement and minified versions are available) from the `dist/` directory, or compile the project yourself.
+Download the compiled Javascript files (development and minified versions are available) from the `dist/` directory, or compile the project yourself.
 
 Import the Javascript file in your HTML document. Choose the version which corresponds to the framework of your choice: jQuery or Prototype.
 
