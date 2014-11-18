@@ -73,10 +73,10 @@ class AbstractChosenOrder
       console.error ERRORS.unreachable_chosen_container.replace('{{function}}', 'getSelectionOrder')
       return order
 
-    chosen_options = if chosen_ui.getElementsByClassName then chosen_ui.getElementsByClassName 'search-choice' else chosen_ui.querySelectorAll '.search-choice'
+    chosen_options = chosen_ui.querySelectorAll '.search-choice'
 
     for opt in chosen_options
-      close_btn = if opt.getElementsByClassName then opt.getElementsByClassName('search-choice-close')[0] else opt.querySelectorAll('.search-choice-close')[0]
+      close_btn = opt.querySelectorAll('.search-choice-close')[0]
       rel = close_btn.getAttribute(@relAttributeName) if close_btn?
       options = Array::filter.call select.childNodes, (o) -> o.nodeName is 'OPTION'
       option = options[rel]
@@ -108,7 +108,7 @@ class AbstractChosenOrder
 
       for opt, i in order
         rel = Array::indexOf.call(select, select.querySelector("option[value=\"" + opt + "\"]"))
-        chosen_options = if chosen_ui.getElementsByClassName then chosen_ui.getElementsByClassName 'search-choice' else chosen_ui.querySelectorAll '.search-choice'
+        chosen_options = chosen_ui.querySelectorAll '.search-choice'
         relAttributeName = @relAttributeName
         option = Array::filter.call(chosen_options, (o) ->
           o.querySelector("a.search-choice-close[" + relAttributeName + "=\"" + rel + "\"]")?

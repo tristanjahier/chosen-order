@@ -80,10 +80,10 @@
         console.error(ERRORS.unreachable_chosen_container.replace('{{function}}', 'getSelectionOrder'));
         return order;
       }
-      chosen_options = chosen_ui.getElementsByClassName ? chosen_ui.getElementsByClassName('search-choice') : chosen_ui.querySelectorAll('.search-choice');
+      chosen_options = chosen_ui.querySelectorAll('.search-choice');
       for (_i = 0, _len = chosen_options.length; _i < _len; _i++) {
         opt = chosen_options[_i];
-        close_btn = opt.getElementsByClassName ? opt.getElementsByClassName('search-choice-close')[0] : opt.querySelectorAll('.search-choice-close')[0];
+        close_btn = opt.querySelectorAll('.search-choice-close')[0];
         if (close_btn != null) {
           rel = close_btn.getAttribute(this.relAttributeName);
         }
@@ -119,7 +119,7 @@
         for (i = _i = 0, _len = order.length; _i < _len; i = ++_i) {
           opt = order[i];
           rel = Array.prototype.indexOf.call(select, select.querySelector("option[value=\"" + opt + "\"]"));
-          chosen_options = chosen_ui.getElementsByClassName ? chosen_ui.getElementsByClassName('search-choice') : chosen_ui.querySelectorAll('.search-choice');
+          chosen_options = chosen_ui.querySelectorAll('.search-choice');
           relAttributeName = this.relAttributeName;
           option = Array.prototype.filter.call(chosen_options, function(o) {
             return o.querySelector("a.search-choice-close[" + relAttributeName + "=\"" + rel + "\"]") != null;

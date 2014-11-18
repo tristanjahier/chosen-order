@@ -22,6 +22,15 @@ Chosen is a library originally created by [Patrick Filler](http://patrickfiller.
 - Prototype : `1.7.1+`
 - Chosen : `1.0.0+`
 
+### Internet Explorer 8
+
+Chosen Order is now compatible with IE8, but you'll still need to add the [es5-shim](https://github.com/es-shims/es5-shim) script to your page in order to make it work.
+
+```html
+<!--[if lte IE 8]>
+    <script type="text/javascript" src="workingdirectory/vendor/es5-shim.min.js"></script>
+<![endif]-->
+```
 
 ## Demo
 
