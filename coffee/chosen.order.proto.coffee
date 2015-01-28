@@ -1,10 +1,10 @@
 # ////////////////////////////////////////////////////////////////
 # Prototype JS plugin
 Element.addMethods
-  getSelectionOrder: (element) ->
-    ChosenOrder.getSelectionOrder element
-  setSelectionOrder: (element, order, force) ->
-    ChosenOrder.setSelectionOrder element, order, force
+  getSelectionOrder: (element, optgroup) ->
+    ChosenOrder.getSelectionOrder element, optgroup
+  setSelectionOrder: (element, order, force, optgroup) ->
+    ChosenOrder.setSelectionOrder element, order, force, optgroup
 
 
 class @ChosenOrder extends AbstractChosenOrder

@@ -3,10 +3,11 @@ $ = jQuery # Ensure we are using jQuery
 # ////////////////////////////////////////////////////////////////
 # jQuery plugin
 $.fn.extend({
-  getSelectionOrder: ->
-    ChosenOrder.getSelectionOrder this
-  setSelectionOrder: (order, force) ->
-    ChosenOrder.setSelectionOrder this, order, force
+  # Added param for added optgroup functionality for getSectionOrder and setSelectionOrder
+  getSelectionOrder: (optgroup) ->
+    ChosenOrder.getSelectionOrder this, optgroup
+  setSelectionOrder: (order, force, optgroup) ->
+    ChosenOrder.setSelectionOrder this, order, force, optgroup
 })
 
 
