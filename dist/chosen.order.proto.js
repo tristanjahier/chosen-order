@@ -17,7 +17,7 @@
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
   AbstractChosenOrder = (function() {
-    var ERRORS, forceSelection, getChosenUIContainer, insertAt, isChosenified, isValidMultipleSelectElement;
+    var ERRORS, forceSelection, getChosenUIContainer, insertAt, isChosenified, isValidMultipleSelectElement, option_selection;
 
     function AbstractChosenOrder() {}
 
@@ -65,13 +65,30 @@
       return triggerEvent(this, "chosen:updated");
     };
 
-    AbstractChosenOrder.getSelectionOrder = function(select) {
+    option_selection = function(select) {
+      var groups, optgroup_counter, option_counter, options;
+      options = [];
+      groups = select.getElementsByTagName("optgroup");
+      optgroup_counter = 0;
+      while (optgroup_counter < groups.length) {
+        options.push(groups[optgroup_counter]);
+        option_counter = 0;
+        while (option_counter < groups[optgroup_counter].getElementsByTagName("option").length) {
+          options.push(groups[optgroup_counter].getElementsByTagName("option")[option_counter]);
+          option_counter++;
+        }
+        optgroup_counter++;
+      }
+      return options;
+    };
+
+    AbstractChosenOrder.getSelectionOrder = function(select, optgroups) {
       var chosen_options, chosen_ui, close_btn, opt, option, options, order, rel, _i, _len;
       if (typeof getDOMElement !== "undefined" && getDOMElement !== null) {
         select = getDOMElement(select);
       }
       order = [];
-      if (!isValidMultipleSelectElement(select)) {
+      if (!isValidMultipleSelectElement(select, optgroups)) {
         console.error(ERRORS.invalid_select_element.replace('{{function}}', 'getSelectionOrder'));
         return order;
       }
@@ -87,17 +104,17 @@
         if (close_btn != null) {
           rel = close_btn.getAttribute(this.relAttributeName);
         }
-        options = Array.prototype.filter.call(select.childNodes, function(o) {
-          return o.nodeName === 'OPTION';
-        });
+        options = (optgroups ? option_selection(select) : Array.prototype.filter.call(select.childNodes, function(o) {
+          return o.nodeName === "OPTION";
+        }));
         option = options[rel];
         order.push(option.value);
       }
       return order;
     };
 
-    AbstractChosenOrder.setSelectionOrder = function(select, order, force) {
-      var chosen_choices, chosen_options, chosen_ui, i, opt, option, rel, relAttributeName, _i, _len, _results;
+    AbstractChosenOrder.setSelectionOrder = function(select, order, force, optgroups) {
+      var chosen_choices, chosen_options, chosen_ui, i, opt, option, rel, relAttributeName, tmp_select, _i, _len, _results;
       if (typeof getDOMElement !== "undefined" && getDOMElement !== null) {
         select = getDOMElement(select);
       }
@@ -118,7 +135,8 @@
         _results = [];
         for (i = _i = 0, _len = order.length; _i < _len; i = ++_i) {
           opt = order[i];
-          rel = Array.prototype.indexOf.call(select, select.querySelector("option[value=\"" + opt + "\"]"));
+          tmp_select = optgroups ? option_selection(select) : select;
+          rel = Array.prototype.indexOf.call(tmp_select, select.querySelector("option[value=\"" + opt + "\"]"));
           chosen_options = chosen_ui.querySelectorAll('.search-choice');
           relAttributeName = this.relAttributeName;
           option = Array.prototype.filter.call(chosen_options, function(o) {
@@ -138,11 +156,11 @@
   })();
 
   Element.addMethods({
-    getSelectionOrder: function(element) {
-      return ChosenOrder.getSelectionOrder(element);
+    getSelectionOrder: function(element, optgroup) {
+      return ChosenOrder.getSelectionOrder(element, optgroup);
     },
-    setSelectionOrder: function(element, order, force) {
-      return ChosenOrder.setSelectionOrder(element, order, force);
+    setSelectionOrder: function(element, order, force, optgroup) {
+      return ChosenOrder.setSelectionOrder(element, order, force, optgroup);
     }
   });
 
