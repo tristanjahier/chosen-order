@@ -57,14 +57,31 @@ class AbstractChosenOrder
       i++
     triggerEvent this, "chosen:updated"
 
+  # ////////////////////////////////////////////////////////////////
+  # Build option list with optgroup included instead of just the select's options.
+  option_selection = (select) ->
+    options = []
+    groups = select.getElementsByTagName("optgroup")
+    optgroup_counter = 0
+
+    while optgroup_counter < groups.length
+      options.push groups[optgroup_counter]
+      option_counter = 0
+
+      while option_counter < groups[optgroup_counter].getElementsByTagName("option").length
+        options.push groups[optgroup_counter].getElementsByTagName("option")[option_counter]
+        option_counter++
+      optgroup_counter++
+
+    options
 
   # ////////////////////////////////////////////////////////////////
   # Retrieve order of the <select> <options>
-  @getSelectionOrder = (select) ->
+  @getSelectionOrder = (select, optgroups) ->
     select = getDOMElement select if getDOMElement? # Ensure to handle a true DOM element
     order = []
 
-    unless isValidMultipleSelectElement(select)
+    unless isValidMultipleSelectElement(select, optgroups)
       console.error ERRORS.invalid_select_element.replace('{{function}}', 'getSelectionOrder')
       return order
 
@@ -78,7 +95,13 @@ class AbstractChosenOrder
     for opt in chosen_options
       close_btn = opt.querySelectorAll('.search-choice-close')[0]
       rel = close_btn.getAttribute(@relAttributeName) if close_btn?
-      options = Array::filter.call select.childNodes, (o) -> o.nodeName is 'OPTION'
+
+      # Building option list including the optgroup if optgroups is true
+      # else building options list with the normal funcitonality.
+      options = (if optgroups then option_selection(select) else Array::filter.call(select.childNodes, (o) ->
+        o.nodeName is "OPTION"
+      ))
+
       option = options[rel]
       order.push option.value
 
@@ -88,7 +111,8 @@ class AbstractChosenOrder
   # ////////////////////////////////////////////////////////////////
   # Change Chosen elements position to match the order
   # @param force : boolean  Force the exact matching of the elements and the selection order
-  @setSelectionOrder = (select, order, force) ->
+  # @param optgroups : boolean  True if select is organized in optgroups
+  @setSelectionOrder = (select, order, force, optgroups) ->
     select = getDOMElement select if getDOMElement? # Ensure to handle a true DOM element
 
     unless isValidMultipleSelectElement(select)
@@ -107,7 +131,9 @@ class AbstractChosenOrder
       forceSelection.call select, order if force? and force is true
 
       for opt, i in order
-        rel = Array::indexOf.call(select, select.querySelector("option[value=\"" + opt + "\"]"))
+        # Getting options options based on if optgroups if true
+        tmp_select = if optgroups then option_selection(select) else select
+        rel = Array::indexOf.call(tmp_select, select.querySelector("option[value=\"" + opt + "\"]"))
         chosen_options = chosen_ui.querySelectorAll '.search-choice'
         relAttributeName = @relAttributeName
         option = Array::filter.call(chosen_options, (o) ->
