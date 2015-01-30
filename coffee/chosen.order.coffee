@@ -10,14 +10,16 @@ class AbstractChosenOrder
 
   # ////////////////////////////////////////////////////////////////
   # Insert an element at a special position among the children of a node
-  insertAt = (node, index, parent) ->
-    parent.insertBefore node, parent.children[index].nextSibling
+  insertAt = (node, index, parentNode) ->
+    parentNode.insertBefore node, parentNode.children[index].nextSibling
 
 
   # ////////////////////////////////////////////////////////////////
   # Flatten an array of <option> and <optgroup> to have the same relative indexes
   # than Chosen UI
-  flattenOptionsAndGroups = (options) ->
+  getFlattenedOptionsAndGroups = (select) ->
+    options = Array::filter.call select.childNodes,
+                                 (o) -> (o.nodeName is 'OPTION') or (o.nodeName is 'OPTGROUP')
     flattened_options = []
 
     for opt in options
@@ -62,7 +64,7 @@ class AbstractChosenOrder
   # ////////////////////////////////////////////////////////////////
   # Force the Chosen selection to the one given in argument
   forceSelection = (selection) ->
-    options = @children
+    options = getFlattenedOptionsAndGroups(this)
     i = 0
     while i < options.length
       opt = options[i]
@@ -93,16 +95,13 @@ class AbstractChosenOrder
 
     chosen_options = chosen_ui.querySelectorAll '.search-choice'
 
+    # This is mandatory because of the weird relative indexation
+    # of the <select> options in the Chosen UI...
+    options = getFlattenedOptionsAndGroups(select)
+
     for opt in chosen_options
       close_btn = opt.querySelectorAll('.search-choice-close')[0]
       rel = close_btn.getAttribute(@relAttributeName) if close_btn?
-      options = Array::filter.call select.childNodes,
-                                   (o) -> (o.nodeName is 'OPTION') or (o.nodeName is 'OPTGROUP')
-
-      # This is mandatory because of the weird relative indexation
-      # of the <select> options in the Chosen UI...
-      options = flattenOptionsAndGroups options
-
       option = options[rel]
       order.push option.value
 
@@ -126,12 +125,18 @@ class AbstractChosenOrder
 
     if order instanceof Array
       order = order.map(Function::call, String::trim)
+      options = getFlattenedOptionsAndGroups(select)
 
       # Ensure that all elements in the order list are actually selected
       forceSelection.call select, order if force? and force is true
 
-      for opt, i in order
-        rel = Array::indexOf.call(select, select.querySelector("option[value=\"" + opt + "\"]"))
+      for opt_val, i in order
+
+        # Search the relative index of the option in the <select> element
+        rel = null
+        for opt, j in options
+          rel = j if opt.value is opt_val
+
         chosen_options = chosen_ui.querySelectorAll '.search-choice'
         relAttributeName = @relAttributeName
         option = Array::filter.call(chosen_options, (o) ->

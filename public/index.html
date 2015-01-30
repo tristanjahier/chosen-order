@@ -67,26 +67,27 @@
             </div>
         </p>
         <hr>
+        <h3>Now with <code>&lt;optgroup&gt;</code> support!</h3>
         <p>
             <div class="input-group">
-                <span class="input-group-addon">What are your favorite video games? (&lt;optgroup&gt; support)</span>
+                <span class="input-group-addon">Video games</span>
                 <select name="videogames" class="form-control chosen" multiple style="width: 450px;">
                     <optgroup label="FPS">
-                        <option value="cs" selected>Counter-Strike (cs)</option>
-                        <option value="hl">Half-Life (hl)</option>
-                        <option value="bf">Battlefield (bf)</option>
+                        <option value="cs" selected>Counter-Strike</option>
+                        <option value="hl">Half-Life</option>
+                        <option value="bf">Battlefield</option>
                     </optgroup>
                     <optgroup label="RPG">
-                        <option value="ff">Final Fantasy (ff)</option>
-                        <option value="pkm">Pokémon (pkm)</option>
+                        <option value="ff">Final Fantasy</option>
+                        <option value="pkm">Pokémon</option>
                     </optgroup>
                     <optgroup label="Strategy">
-                        <option value="aoe">Age of Empires (aoe)</option>
-                        <option value="sc">StarCraft (sc)</option>
+                        <option value="aoe">Age of Empires</option>
+                        <option value="sc">StarCraft</option>
                     </optgroup>
                     <optgroup label="Puzzle">
                         <option value="portal">Portal</option>
-                        <option value="btm">Blocks That Matter (btm)</option>
+                        <option value="btm">Blocks That Matter</option>
                     </optgroup>
                 </select>
             </div>
@@ -96,6 +97,11 @@
                 <button type="button" id="s3-get-order" class="btn btn-primary" style="width: 150px">Retrieve order</button>
                 <br><br>
                 <ol id="s3-order-list"></ol>
+            </div>
+            <div class="col-lg-3 col-lg-offset-1 col-sm-6">
+                <button type="button" id="s3-set-order" class="btn btn-success" style="width: 150px">Set order</button>
+                <br><br>
+                <input id="s3-input-order" type="text" class="form-control" value="portal,hl,aoe   , pkm" style="width: 250px;">
             </div>
         </div>
     </article>
@@ -140,6 +146,11 @@
                 $('#s3-order-list').append("<li>"+selection[i]+"</li>");
             });
         });
+
+        $('#s3-set-order').click(function()
+        {
+            ChosenOrder.setSelectionOrder(SELECT_VIDEOGAMES, $('#s3-input-order').val().split(','), true);
+        })
     </script>
 </body>
 </html>

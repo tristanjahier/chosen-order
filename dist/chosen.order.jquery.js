@@ -17,7 +17,7 @@
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
   AbstractChosenOrder = (function() {
-    var ERRORS, flattenOptionsAndGroups, forceSelection, getChosenUIContainer, insertAt, isChosenified, isValidMultipleSelectElement;
+    var ERRORS, forceSelection, getChosenUIContainer, getFlattenedOptionsAndGroups, insertAt, isChosenified, isValidMultipleSelectElement;
 
     function AbstractChosenOrder() {}
 
@@ -27,12 +27,15 @@
       unreachable_chosen_container: "ChosenOrder::{{function}}: could not find the Chosen UI container! To solve the problem, try adding an \"id\" attribute to your <select> element."
     };
 
-    insertAt = function(node, index, parent) {
-      return parent.insertBefore(node, parent.children[index].nextSibling);
+    insertAt = function(node, index, parentNode) {
+      return parentNode.insertBefore(node, parentNode.children[index].nextSibling);
     };
 
-    flattenOptionsAndGroups = function(options) {
-      var flattened_options, opt, sub_opt, sub_options, _i, _j, _len, _len1;
+    getFlattenedOptionsAndGroups = function(select) {
+      var flattened_options, opt, options, sub_opt, sub_options, _i, _j, _len, _len1;
+      options = Array.prototype.filter.call(select.childNodes, function(o) {
+        return (o.nodeName === 'OPTION') || (o.nodeName === 'OPTGROUP');
+      });
       flattened_options = [];
       for (_i = 0, _len = options.length; _i < _len; _i++) {
         opt = options[_i];
@@ -68,7 +71,7 @@
 
     forceSelection = function(selection) {
       var i, opt, options, _ref;
-      options = this.children;
+      options = getFlattenedOptionsAndGroups(this);
       i = 0;
       while (i < options.length) {
         opt = options[i];
@@ -100,16 +103,13 @@
         return order;
       }
       chosen_options = chosen_ui.querySelectorAll('.search-choice');
+      options = getFlattenedOptionsAndGroups(select);
       for (_i = 0, _len = chosen_options.length; _i < _len; _i++) {
         opt = chosen_options[_i];
         close_btn = opt.querySelectorAll('.search-choice-close')[0];
         if (close_btn != null) {
           rel = close_btn.getAttribute(this.relAttributeName);
         }
-        options = Array.prototype.filter.call(select.childNodes, function(o) {
-          return (o.nodeName === 'OPTION') || (o.nodeName === 'OPTGROUP');
-        });
-        options = flattenOptionsAndGroups(options);
         option = options[rel];
         order.push(option.value);
       }
@@ -117,7 +117,7 @@
     };
 
     AbstractChosenOrder.setSelectionOrder = function(select, order, force) {
-      var chosen_choices, chosen_options, chosen_ui, i, opt, option, rel, relAttributeName, _i, _len, _results;
+      var chosen_choices, chosen_options, chosen_ui, i, j, opt, opt_val, option, options, rel, relAttributeName, _i, _j, _len, _len1, _results;
       if (typeof getDOMElement !== "undefined" && getDOMElement !== null) {
         select = getDOMElement(select);
       }
@@ -132,13 +132,20 @@
       }
       if (order instanceof Array) {
         order = order.map(Function.prototype.call, String.prototype.trim);
+        options = getFlattenedOptionsAndGroups(select);
         if ((force != null) && force === true) {
           forceSelection.call(select, order);
         }
         _results = [];
         for (i = _i = 0, _len = order.length; _i < _len; i = ++_i) {
-          opt = order[i];
-          rel = Array.prototype.indexOf.call(select, select.querySelector("option[value=\"" + opt + "\"]"));
+          opt_val = order[i];
+          rel = null;
+          for (j = _j = 0, _len1 = options.length; _j < _len1; j = ++_j) {
+            opt = options[j];
+            if (opt.value === opt_val) {
+              rel = j;
+            }
+          }
           chosen_options = chosen_ui.querySelectorAll('.search-choice');
           relAttributeName = this.relAttributeName;
           option = Array.prototype.filter.call(chosen_options, function(o) {
