@@ -15,6 +15,24 @@ class AbstractChosenOrder
 
 
   # ////////////////////////////////////////////////////////////////
+  # Flatten an array of <option> and <optgroup> to have the same relative indexes
+  # than Chosen UI
+  flattenOptionsAndGroups = (options) ->
+    flattened_options = []
+
+    for opt in options
+      flattened_options.push opt
+      if opt.nodeName.toUpperCase() is 'OPTGROUP'
+        # If it's an <optgroup>, collect every inner <option> too
+        sub_options = Array::filter.call opt.childNodes,
+                                         (o) -> o.nodeName.toUpperCase() is 'OPTION'
+        for sub_opt in sub_options
+          flattened_options.push sub_opt
+
+    return flattened_options
+
+
+  # ////////////////////////////////////////////////////////////////
   # Check if one element is a valid multiple select
   isValidMultipleSelectElement = (element) ->
     element isnt null               and
@@ -78,7 +96,13 @@ class AbstractChosenOrder
     for opt in chosen_options
       close_btn = opt.querySelectorAll('.search-choice-close')[0]
       rel = close_btn.getAttribute(@relAttributeName) if close_btn?
-      options = Array::filter.call select.childNodes, (o) -> o.nodeName is 'OPTION'
+      options = Array::filter.call select.childNodes,
+                                   (o) -> (o.nodeName is 'OPTION') or (o.nodeName is 'OPTGROUP')
+
+      # This is mandatory because of the weird relative indexation
+      # of the <select> options in the Chosen UI...
+      options = flattenOptionsAndGroups options
+
       option = options[rel]
       order.push option.value
 

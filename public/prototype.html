@@ -43,14 +43,14 @@
         </p>
         <div class="row">
             <div class="col-lg-3 col-sm-6">
-                <button type="button" id="get-order" class="btn btn-primary" style="width: 150px">Retrieve order</button>
+                <button type="button" id="s1-get-order" class="btn btn-primary" style="width: 150px">Retrieve order</button>
                 <br><br>
-                <ol id="order-list"></ol>
+                <ol id="s1-order-list"></ol>
             </div>
             <div class="col-lg-3 col-lg-offset-1 col-sm-6">
-                <button type="button" id="set-order" class="btn btn-success" style="width: 150px">Set order</button>
+                <button type="button" id="s1-set-order" class="btn btn-success" style="width: 150px">Set order</button>
                 <br><br>
-                <input id="order" type="text" class="form-control" value="poire,  ananas, banane  ,kiwi " style="width: 250px;">
+                <input id="s1-input-order" type="text" class="form-control" value="poire,  ananas, banane  ,kiwi " style="width: 250px;">
             </div>
         </div>
         <hr>
@@ -66,6 +66,38 @@
                 </select>
             </div>
         </p>
+        <hr>
+        <p>
+            <div class="input-group">
+                <span class="input-group-addon">What are your favorite video games? (&lt;optgroup&gt; support)</span>
+                <select name="videogames" class="form-control chosen" multiple style="width: 450px;">
+                    <optgroup label="FPS">
+                        <option value="cs" selected>Counter-Strike (cs)</option>
+                        <option value="hl">Half-Life (hl)</option>
+                        <option value="bf">Battlefield (bf)</option>
+                    </optgroup>
+                    <optgroup label="RPG">
+                        <option value="ff">Final Fantasy (ff)</option>
+                        <option value="pkm">Pokémon (pkm)</option>
+                    </optgroup>
+                    <optgroup label="Strategy">
+                        <option value="aoe">Age of Empires (aoe)</option>
+                        <option value="sc">StarCraft (sc)</option>
+                    </optgroup>
+                    <optgroup label="Puzzle">
+                        <option value="portal">Portal</option>
+                        <option value="btm">Blocks That Matter (btm)</option>
+                    </optgroup>
+                </select>
+            </div>
+        </p>
+        <div class="row">
+            <div class="col-lg-3 col-sm-6">
+                <button type="button" id="s3-get-order" class="btn btn-primary" style="width: 150px">Retrieve order</button>
+                <br><br>
+                <ol id="s3-order-list"></ol>
+            </div>
+        </div>
     </article>
 
     <script type="text/javascript">
@@ -73,32 +105,44 @@
         $$('select[multiple].chosen').each(function(element) { new Chosen(element); });
         var MY_SELECT = $$('select[multiple].chosen')[0];
 
-        $('get-order').on('click', 'button', function(event, element)
+        $('s1-get-order').on('click', 'button', function(event, element)
         {
             // Functional
             // var selection = ChosenOrder.getSelectionOrder(MY_SELECT);
             // Object-oriented
             var selection = MY_SELECT.getSelectionOrder();
 
-            while ($('order-list').hasChildNodes())
-                $('order-list').removeChild($('order-list').lastChild);
+            while ($('s1-order-list').hasChildNodes())
+                $('s1-order-list').removeChild($('s1-order-list').lastChild);
 
             $(selection).each(function(fruit)
             {
-                $('order-list').appendChild(new Element('li').update(fruit));
+                $('s1-order-list').appendChild(new Element('li').update(fruit));
             });
         });
 
-        $('set-order').on('click', 'button', function(event, element)
+        $('s1-set-order').on('click', 'button', function(event, element)
         {
             // Functional
-            // ChosenOrder.setSelectionOrder(MY_SELECT, $('order').value.split(','), true);
+            // ChosenOrder.setSelectionOrder(MY_SELECT, $('s1-input-order').value.split(','), true);
             // Object-oriented
-            MY_SELECT.setSelectionOrder($('order').value.split(','), true);
+            MY_SELECT.setSelectionOrder($('s1-input-order').value.split(','), true);
         })
 
-        // $('get-order').click();
-        // $('set-order').click();
+        // $('s1-get-order').click();
+        // $('s1-set-order').click();
+
+        var SELECT_VIDEOGAMES = $$('select[multiple][name="videogames"].chosen')[0];
+        $('s3-get-order').on('click', 'button', function(event, element)
+        {
+            var selection = ChosenOrder.getSelectionOrder(SELECT_VIDEOGAMES);
+            while ($('s3-order-list').hasChildNodes())
+                $('s3-order-list').removeChild($('s3-order-list').lastChild);
+            $(selection).each(function(videogame)
+            {
+                $('s3-order-list').appendChild(new Element('li').update(videogame));
+            });
+        });
     </script>
 </body>
 </html>

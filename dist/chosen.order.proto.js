@@ -17,7 +17,7 @@
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
   AbstractChosenOrder = (function() {
-    var ERRORS, forceSelection, getChosenUIContainer, insertAt, isChosenified, isValidMultipleSelectElement;
+    var ERRORS, flattenOptionsAndGroups, forceSelection, getChosenUIContainer, insertAt, isChosenified, isValidMultipleSelectElement;
 
     function AbstractChosenOrder() {}
 
@@ -29,6 +29,25 @@
 
     insertAt = function(node, index, parent) {
       return parent.insertBefore(node, parent.children[index].nextSibling);
+    };
+
+    flattenOptionsAndGroups = function(options) {
+      var flattened_options, opt, sub_opt, sub_options, _i, _j, _len, _len1;
+      flattened_options = [];
+      for (_i = 0, _len = options.length; _i < _len; _i++) {
+        opt = options[_i];
+        flattened_options.push(opt);
+        if (opt.nodeName.toUpperCase() === 'OPTGROUP') {
+          sub_options = Array.prototype.filter.call(opt.childNodes, function(o) {
+            return o.nodeName.toUpperCase() === 'OPTION';
+          });
+          for (_j = 0, _len1 = sub_options.length; _j < _len1; _j++) {
+            sub_opt = sub_options[_j];
+            flattened_options.push(sub_opt);
+          }
+        }
+      }
+      return flattened_options;
     };
 
     isValidMultipleSelectElement = function(element) {
@@ -88,8 +107,9 @@
           rel = close_btn.getAttribute(this.relAttributeName);
         }
         options = Array.prototype.filter.call(select.childNodes, function(o) {
-          return o.nodeName === 'OPTION';
+          return (o.nodeName === 'OPTION') || (o.nodeName === 'OPTGROUP');
         });
+        options = flattenOptionsAndGroups(options);
         option = options[rel];
         order.push(option.value);
       }
