@@ -19,7 +19,7 @@ class AbstractChosenOrder
   # than Chosen UI
   getFlattenedOptionsAndGroups = (select) ->
     options = Array::filter.call select.childNodes,
-                                 (o) -> (o.nodeName is 'OPTION') or (o.nodeName is 'OPTGROUP')
+                                 (o) -> o.nodeName.toUpperCase() in ['OPTION', 'OPTGROUP']
     flattened_options = []
 
     for opt in options

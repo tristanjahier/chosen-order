@@ -34,7 +34,8 @@
     getFlattenedOptionsAndGroups = function(select) {
       var flattened_options, opt, options, sub_opt, sub_options, _i, _j, _len, _len1;
       options = Array.prototype.filter.call(select.childNodes, function(o) {
-        return (o.nodeName === 'OPTION') || (o.nodeName === 'OPTGROUP');
+        var _ref;
+        return (_ref = o.nodeName.toUpperCase()) === 'OPTION' || _ref === 'OPTGROUP';
       });
       flattened_options = [];
       for (_i = 0, _len = options.length; _i < _len; _i++) {
