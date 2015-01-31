@@ -4,7 +4,7 @@
     <title>Chosen order handler : jQuery plugin</title>
 
 <!--[if lte IE 8]>
-    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.0.3/es5-shim.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.0.6/es5-shim.min.js"></script>
 <![endif]-->
 
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
@@ -131,7 +131,7 @@
             // ChosenOrder.setSelectionOrder(MY_SELECT, $('#s1-input-order').val().split(','), true);
             // Object-oriented
             MY_SELECT.setSelectionOrder($('#s1-input-order').val().split(','), true);
-        })
+        });
 
         // $('#s1-get-order').click();
         // $('#s1-set-order').click();
@@ -150,7 +150,7 @@
         $('#s3-set-order').click(function()
         {
             ChosenOrder.setSelectionOrder(SELECT_VIDEOGAMES, $('#s3-input-order').val().split(','), true);
-        })
+        });
     </script>
 </body>
 </html>
