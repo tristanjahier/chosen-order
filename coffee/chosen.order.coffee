@@ -7,17 +7,16 @@ class AbstractChosenOrder
     unreachable_chosen_container: "ChosenOrder::{{function}}: could not find the Chosen UI container! To solve the problem, try adding an \"id\" attribute to your <select> element."
   }
 
-
   # ////////////////////////////////////////////////////////////////
   # Insert an element at a special position among the children of a node
-  insertAt = (node, index, parentNode) ->
+  @insertAt = (node, index, parentNode) ->
     parentNode.insertBefore node, parentNode.children[index].nextSibling
 
 
   # ////////////////////////////////////////////////////////////////
   # Flatten an array of <option> and <optgroup> to have the same relative indexes
   # than Chosen UI
-  getFlattenedOptionsAndGroups = (select) ->
+  @getFlattenedOptionsAndGroups = (select) ->
     options = Array::filter.call select.childNodes,
                                  (o) -> o.nodeName.toUpperCase() in ['OPTION', 'OPTGROUP']
     flattened_options = []
@@ -36,7 +35,7 @@ class AbstractChosenOrder
 
   # ////////////////////////////////////////////////////////////////
   # Check if one element is a valid multiple select
-  isValidMultipleSelectElement = (element) ->
+  @isValidMultipleSelectElement = (element) ->
     element isnt null               and
     typeof element isnt "undefined" and
     element.nodeName is "SELECT"    and
@@ -45,26 +44,26 @@ class AbstractChosenOrder
 
   # ////////////////////////////////////////////////////////////////
   # Retrieve Chosen UI Element for a given select element
-  getChosenUIContainer = (select) ->
+  @getChosenUIContainer = (select) ->
     # Quick and easy case
     if select.id isnt ""
       document.getElementById select.id.replace(/-/g, "_") + "_chosen"
     # Tricky case, try to identify the container without any ID...
     else
-      searchChosenUIContainer(select)
+      @searchChosenUIContainer(select)
 
 
   # ////////////////////////////////////////////////////////////////
   # Check if a select element has been chosenified
   # /!\ Relies firstly on the ID. If there is no "id" attribute,
   # it tries to retrieve the Chosen container by a less reliable way
-  isChosenified = (select) -> getChosenUIContainer(select)?
+  @isChosenified = (select) -> @getChosenUIContainer(select)?
 
 
   # ////////////////////////////////////////////////////////////////
   # Force the Chosen selection to the one given in argument
-  forceSelection = (selection) ->
-    options = getFlattenedOptionsAndGroups(this)
+  @forceSelection = (select, selection) ->
+    options = @getFlattenedOptionsAndGroups(select)
     i = 0
     while i < options.length
       opt = options[i]
@@ -75,20 +74,20 @@ class AbstractChosenOrder
         opt.selected = false
         opt.removeAttribute "selected"
       i++
-    triggerEvent this, "chosen:updated"
+    @triggerEvent select, "chosen:updated"
 
 
   # ////////////////////////////////////////////////////////////////
   # Retrieve order of the <select> <options>
   @getSelectionOrder = (select) ->
-    select = getDOMElement select if getDOMElement? # Ensure to handle a true DOM element
+    select = @getDOMElement select if @getDOMElement? # Ensure to handle a true DOM element
     order = []
 
-    unless isValidMultipleSelectElement(select)
+    unless @isValidMultipleSelectElement(select)
       console.error ERRORS.invalid_select_element.replace('{{function}}', 'getSelectionOrder')
       return order
 
-    chosen_ui = getChosenUIContainer(select)
+    chosen_ui = @getChosenUIContainer(select)
     unless chosen_ui?
       console.error ERRORS.unreachable_chosen_container.replace('{{function}}', 'getSelectionOrder')
       return order
@@ -97,7 +96,7 @@ class AbstractChosenOrder
 
     # This is mandatory because of the weird relative indexation
     # of the <select> options in the Chosen UI...
-    options = getFlattenedOptionsAndGroups(select)
+    options = @getFlattenedOptionsAndGroups(select)
 
     for opt in chosen_options
       close_btn = opt.querySelectorAll('.search-choice-close')[0]
@@ -112,23 +111,23 @@ class AbstractChosenOrder
   # Change Chosen elements position to match the order
   # @param force : boolean  Force the exact matching of the elements and the selection order
   @setSelectionOrder = (select, order, force) ->
-    select = getDOMElement select if getDOMElement? # Ensure to handle a true DOM element
+    select = @getDOMElement select if @getDOMElement? # Ensure to handle a true DOM element
 
-    unless isValidMultipleSelectElement(select)
+    unless @isValidMultipleSelectElement(select)
       console.error ERRORS.invalid_select_element.replace('{{function}}', 'setSelectionOrder')
       return
 
-    chosen_ui = getChosenUIContainer(select)
+    chosen_ui = @getChosenUIContainer(select)
     unless chosen_ui?
       console.error ERRORS.unreachable_chosen_container.replace('{{function}}', 'setSelectionOrder')
       return
 
     if order instanceof Array
       order = order.map(Function::call, String::trim)
-      options = getFlattenedOptionsAndGroups(select)
+      options = @getFlattenedOptionsAndGroups(select)
 
       # Ensure that all elements in the order list are actually selected
-      forceSelection.call select, order if force? and force is true
+      @forceSelection(select, order) if force? and force is true
 
       for opt_val, i in order
 
@@ -143,7 +142,7 @@ class AbstractChosenOrder
           o.querySelector("a.search-choice-close[" + relAttributeName + "=\"" + rel + "\"]")?
         )[0]
         chosen_choices = chosen_ui.querySelector("ul.chosen-choices")
-        insertAt option, i, chosen_ui.querySelector('ul.chosen-choices')
+        @insertAt option, i, chosen_ui.querySelector('ul.chosen-choices')
 
     else
       console.error ERRORS.invalid_selection_array.replace('{{function}}', 'setSelectionOrder')
