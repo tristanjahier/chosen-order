@@ -8,8 +8,8 @@ module.exports = (grunt) ->
   grunt.initConfig
     pkg: grunt.file.readJSON("package.json")
     comments: """
-// Chosen Order is a plugin for Chosen
-// It allows you to handle the order of the selection
+// Chosen Order #{version_tag()}
+// This plugin allows you to handle the order of the selection for Chosen multiple <select> dropdowns
 // Full source at https://github.com/tristanjahier/chosen-order
 // Copyright (c) 2013 - Tristan Jahier, http://tristan-jahier.fr
 

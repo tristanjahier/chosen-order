@@ -1,5 +1,5 @@
-// Chosen Order is a plugin for Chosen
-// It allows you to handle the order of the selection
+// Chosen Order v1.2.1
+// This plugin allows you to handle the order of the selection for Chosen multiple <select> dropdowns
 // Full source at https://github.com/tristanjahier/chosen-order
 // Copyright (c) 2013 - Tristan Jahier, http://tristan-jahier.fr
 
