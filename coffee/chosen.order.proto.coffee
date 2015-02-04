@@ -14,7 +14,7 @@ class @ChosenOrder extends AbstractChosenOrder
 
   # ////////////////////////////////////////////////////////////////
   # Search the Chosen UI container of a given select element
-  parent.searchChosenUIContainer = (element) ->
+  @searchChosenUIContainer = (element) ->
     # Hypothesis: the Chosen UI container is the first sibling
     # of the raw <select> element.
     element.next(".chosen-container.chosen-container-multi")
@@ -22,4 +22,4 @@ class @ChosenOrder extends AbstractChosenOrder
 
   # ////////////////////////////////////////////////////////////////
   # Fire an event
-  parent.triggerEvent = (target, event_name) -> Event.fire $(target), event_name
+  @triggerEvent = (target, event_name) -> Event.fire $(target), event_name

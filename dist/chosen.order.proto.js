@@ -184,11 +184,11 @@
 
     ChosenOrder.relAttributeName = "rel";
 
-    parent.searchChosenUIContainer = function(element) {
+    ChosenOrder.searchChosenUIContainer = function(element) {
       return element.next(".chosen-container.chosen-container-multi");
     };
 
-    parent.triggerEvent = function(target, event_name) {
+    ChosenOrder.triggerEvent = function(target, event_name) {
       return Event.fire($(target), event_name);
     };
 
