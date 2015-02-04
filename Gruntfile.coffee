@@ -27,19 +27,19 @@ module.exports = (grunt) ->
       options:
         banner: "<%= comments %>"
       jquery:
-        src: ["dist/chosen.order.jquery.js"]
-        dest: "dist/chosen.order.jquery.js"
+        src: ["public/chosen.order.jquery.js"]
+        dest: "public/chosen.order.jquery.js"
       proto:
-        src: ["dist/chosen.order.proto.js"]
-        dest: "dist/chosen.order.proto.js"
+        src: ["public/chosen.order.proto.js"]
+        dest: "public/chosen.order.proto.js"
 
     coffee:
       options:
         join: true
       compile:
         files:
-          'dist/chosen.order.jquery.js': ['coffee/chosen.order.coffee', 'coffee/chosen.order.jquery.coffee']
-          'dist/chosen.order.proto.js': ['coffee/chosen.order.coffee', 'coffee/chosen.order.proto.coffee']
+          'public/chosen.order.jquery.js': ['coffee/chosen.order.coffee', 'coffee/chosen.order.jquery.coffee']
+          'public/chosen.order.proto.js': ['coffee/chosen.order.coffee', 'coffee/chosen.order.proto.coffee']
 
     uglify:
       options:
@@ -48,12 +48,8 @@ module.exports = (grunt) ->
         banner: "<%= minified_comments %>"
       minified_chosen_order_js:
         files:
-          'dist/chosen.order.jquery.min.js': ['dist/chosen.order.jquery.js']
-          'dist/chosen.order.proto.min.js': ['dist/chosen.order.proto.js']
-
-    copy:
-      files:
-        {expand: true, cwd: 'dist/', src: ['*.js'], dest: 'public/'}
+          'public/chosen.order.jquery.min.js': ['public/chosen.order.jquery.js']
+          'public/chosen.order.proto.min.js': ['public/chosen.order.proto.js']
 
     watch:
       scripts:
@@ -67,5 +63,4 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks 'grunt-contrib-watch'
 
   grunt.registerTask 'default', ['build']
-  grunt.registerTask 'build', ['coffee', 'concat', 'uglify', 'copy']
-  grunt.registerTask 'copy_compiled_js', ['copy']
+  grunt.registerTask 'build', ['coffee', 'concat', 'uglify']
