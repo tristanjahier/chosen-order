@@ -42,6 +42,12 @@ Use the `grunt` command to compile the project, and a task will fill this direct
 
 If you have no idea what I'm talking about, just copy `chosen.order.jquery.min.js` and `chosen.order.proto.min.js` from `dist/` to `public/`.
 
+#### JsFiddle
+
+For demonstration purpose, there is also 2 live demonstrations on JsFiddle:
+
+- jQuery: [http://jsfiddle.net/oj3cjw9w](http://jsfiddle.net/oj3cjw9w)
+- PrototypeJs: [http://jsfiddle.net/ch5bjh53](http://jsfiddle.net/ch5bjh53)
 
 ## Usage
 
