@@ -51,6 +51,21 @@ module.exports = (grunt) ->
           'public/chosen.order.jquery.min.js': ['public/chosen.order.jquery.js']
           'public/chosen.order.proto.min.js': ['public/chosen.order.proto.js']
 
+    copy:
+      prep_release:
+        expand: true
+        src: ['README.md', 'LICENSE.md']
+        dest: 'public/'
+
+    zip:
+      'chosen-order':
+        cwd: 'public/'
+        src: ['public/**/*']
+        dest: "chosen_order_#{version_tag()}.zip"
+
+    clean:
+      prep_release: ['public/README.md', 'public/LICENSE.md']
+
     watch:
       scripts:
         files: ['coffee/**/*.coffee']
@@ -61,6 +76,9 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks 'grunt-contrib-concat'
   grunt.loadNpmTasks 'grunt-contrib-copy'
   grunt.loadNpmTasks 'grunt-contrib-watch'
+  grunt.loadNpmTasks 'grunt-contrib-clean'
+  grunt.loadNpmTasks 'grunt-zip'
 
   grunt.registerTask 'default', ['build']
   grunt.registerTask 'build', ['coffee', 'concat', 'uglify']
+  grunt.registerTask 'prep_release', ['build', 'copy:prep_release', 'zip:chosen-order', 'clean:prep_release']
