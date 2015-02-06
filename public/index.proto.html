@@ -114,9 +114,9 @@
         $('s1-get-order').on('click', 'button', function(event, element)
         {
             // Functional
-            // var selection = ChosenOrder.getSelectionOrder(MY_SELECT);
+            // var selection = ChosenOrder.getSelectionInOrder(MY_SELECT);
             // Object-oriented
-            var selection = MY_SELECT.getSelectionOrder();
+            var selection = MY_SELECT.getSelectionInOrder();
 
             while ($('s1-order-list').hasChildNodes())
                 $('s1-order-list').removeChild($('s1-order-list').lastChild);
@@ -130,9 +130,9 @@
         $('s1-set-order').on('click', 'button', function(event, element)
         {
             // Functional
-            // ChosenOrder.setSelectionOrder(MY_SELECT, $('s1-input-order').value.split(','), true);
+            // ChosenOrder.setSelectionInOrder(MY_SELECT, $('s1-input-order').value.split(','), true);
             // Object-oriented
-            MY_SELECT.setSelectionOrder($('s1-input-order').value.split(','), true);
+            MY_SELECT.setSelectionInOrder($('s1-input-order').value.split(','), true);
         });
 
         // $('s1-get-order').click();
@@ -141,7 +141,7 @@
         var SELECT_VIDEOGAMES = $$('select[multiple][name="videogames"].chosen')[0];
         $('s3-get-order').on('click', 'button', function(event, element)
         {
-            var selection = ChosenOrder.getSelectionOrder(SELECT_VIDEOGAMES);
+            var selection = ChosenOrder.getSelectionInOrder(SELECT_VIDEOGAMES);
             while ($('s3-order-list').hasChildNodes())
                 $('s3-order-list').removeChild($('s3-order-list').lastChild);
             $(selection).each(function(videogame)
@@ -152,7 +152,7 @@
 
         $('s3-set-order').on('click', 'button', function(event, element)
         {
-            ChosenOrder.setSelectionOrder(SELECT_VIDEOGAMES, $('s3-input-order').value.split(','), true);
+            ChosenOrder.setSelectionInOrder(SELECT_VIDEOGAMES, $('s3-input-order').value.split(','), true);
         });
     </script>
 </body>

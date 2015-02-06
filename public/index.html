@@ -114,9 +114,9 @@
         $('#s1-get-order').click(function()
         {
             // Functional
-            // var selection = ChosenOrder.getSelectionOrder(MY_SELECT);
+            // var selection = ChosenOrder.getSelectionInOrder(MY_SELECT.get(0));
             // Object-oriented
-            var selection = MY_SELECT.getSelectionOrder();
+            var selection = MY_SELECT.getSelectionInOrder();
 
             $('#s1-order-list').empty();
             $(selection).each(function(i)
@@ -128,9 +128,9 @@
         $('#s1-set-order').click(function()
         {
             // Functional
-            // ChosenOrder.setSelectionOrder(MY_SELECT, $('#s1-input-order').val().split(','), true);
+            // ChosenOrder.setSelectionInOrder(MY_SELECT.get(0), $('#s1-input-order').val().split(','), true);
             // Object-oriented
-            MY_SELECT.setSelectionOrder($('#s1-input-order').val().split(','), true);
+            MY_SELECT.setSelectionInOrder($('#s1-input-order').val().split(','), true);
         });
 
         // $('#s1-get-order').click();
@@ -139,7 +139,7 @@
         var SELECT_VIDEOGAMES = $('select[multiple][name="videogames"].chosen').get(0);
         $('#s3-get-order').click(function()
         {
-            var selection = ChosenOrder.getSelectionOrder(SELECT_VIDEOGAMES);
+            var selection = ChosenOrder.getSelectionInOrder(SELECT_VIDEOGAMES);
             $('#s3-order-list').empty();
             $(selection).each(function(i)
             {
@@ -149,7 +149,7 @@
 
         $('#s3-set-order').click(function()
         {
-            ChosenOrder.setSelectionOrder(SELECT_VIDEOGAMES, $('#s3-input-order').val().split(','), true);
+            ChosenOrder.setSelectionInOrder(SELECT_VIDEOGAMES, $('#s3-input-order').val().split(','), true);
         });
     </script>
 </body>
