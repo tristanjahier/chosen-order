@@ -6,10 +6,13 @@ $.fn.extend
     ChosenOrder.setSelectionInOrder this.get(0), selection
 
 
-class ChosenOrderHandler extends AbstractChosenOrderHandler
+# jQuery version of the Chosen order handler
+# Adds the jQuery-specific part of the library
+class @ChosenOrderHandler extends ChosenOrderHandlerBase
 
   relAttributeName: "data-option-array-index"
 
+  # Retrieve the Chosen UI container corresponding to the <select> element
   getChosenUIContainer: () ->
     if $(@select).data('chosen')?
       $(@select).data('chosen').container[0]
@@ -20,6 +23,8 @@ class ChosenOrderHandler extends AbstractChosenOrderHandler
     $(target).trigger event_name
 
 
+# Helper class
+# Provides two easy-to-use static functions
 class @ChosenOrder
 
   @getSelectionInOrder: (element) ->

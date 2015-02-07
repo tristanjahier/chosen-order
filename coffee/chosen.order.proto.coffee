@@ -6,10 +6,13 @@ Element.addMethods
     ChosenOrder.setSelectionInOrder element, selection
 
 
-class ChosenOrderHandler extends AbstractChosenOrderHandler
+# PrototypeJS version of the Chosen order handler
+# Adds the PrototypeJS-specific part of the library
+class @ChosenOrderHandler extends ChosenOrderHandlerBase
 
   relAttributeName: "rel"
 
+  # Retrieve the Chosen UI container corresponding to the <select> element
   getChosenUIContainer: () ->
     @select.next('.chosen-container.chosen-container-multi')
 
@@ -17,6 +20,8 @@ class ChosenOrderHandler extends AbstractChosenOrderHandler
     Event.fire $(target), event_name
 
 
+# Helper class
+# Provides two easy-to-use static functions
 class @ChosenOrder
 
   @getSelectionInOrder: (element) ->

@@ -1,22 +1,33 @@
-class AbstractChosenOrderHandler
+# Base class for a Chosen order handler
+#
+# @version 2.0.0-dev
+# @author Tristan Jahier
+# @copyright 2013-2015
+class ChosenOrderHandlerBase
 
-  ERRORS =
+
+  # Errors collection. Contains all error messages output by the script.
+  # Static member (shared by every instance)
+  ERRORS:
     invalid_select_element:    "ChosenOrder::{{function}}: first argument must be a valid HTML Multiple Select element that has been Chosenified!"
     invalid_selection_array:   "ChosenOrder::{{function}}: second argument must be an Array!"
     notfound_chosen_container: "ChosenOrder::{{function}}: could not find the Chosen UI container! To solve the problem, try adding an \"id\" attribute to your <select> element."
 
 
+  # Construct a new handler
+  # @param select [HTMLElement] The <select> element
   constructor: (@select) ->
 
 
-  # ////////////////////////////////////////////////////////////////
   # Helper function to output errors in the Javascript console
+  # @param errorName [String] The slug name of the error
+  # @param functioName [String] The name of the function where it happens
   displayError: (errorName, functionName) ->
-    console.error ERRORS[errorName].replace('{{function}}', functionName)
+    console.error @ERRORS[errorName].replace('{{function}}', functionName)
 
 
-  # ////////////////////////////////////////////////////////////////
   # Check if one element is a valid multiple select
+  # @return [Boolean] whether the input element is valid or not
   isValidMultipleSelectElement: ->
     @select isnt null                          and
     typeof @select isnt "undefined"            and
@@ -24,9 +35,9 @@ class AbstractChosenOrderHandler
     @select.multiple?
 
 
-  # ////////////////////////////////////////////////////////////////
   # Flatten an array of <option> and <optgroup> to have the same relative indexes
   # than Chosen UI
+  # @return [Array] a flattened array of options and option groups
   getFlattenedOptionsAndGroups: ->
     options = Array::filter.call @select.childNodes,
                                  (o) -> o.nodeName.toUpperCase() in ['OPTION', 'OPTGROUP']
@@ -44,8 +55,8 @@ class AbstractChosenOrderHandler
     return flattened_options
 
 
-  # ////////////////////////////////////////////////////////////////
-  # Force the Chosen selection to the one given in argument
+  # Force the Chosen UI to display the given selection, without any notion of order
+  # @param selection [Array] an array of <option> values
   forceSelection: (selection) ->
     options = @getFlattenedOptionsAndGroups()
     i = 0
@@ -61,14 +72,17 @@ class AbstractChosenOrderHandler
     @triggerEvent(@select, 'chosen:updated')
 
 
-  # ////////////////////////////////////////////////////////////////
   # Insert an element at a special position among the children of a node
+  # @param node [HTMLElement] the element to insert
+  # @param index [Integer] target position of the element
+  # @param parentNode [HTMLElement] parent element where element is inserted
   insertAt: (node, index, parentNode) ->
     parentNode.insertBefore(node, parentNode.children[index].nextSibling)
 
 
-  # ////////////////////////////////////////////////////////////////
-  # Retrieve order of the <select> <options>
+  # Retrieve the selection of the <select> element, in the order it appears
+  # visually in the Chosen UI
+  # @return [Array] ordered selection
   getSelectionInOrder: ->
     selection = []
 
@@ -96,9 +110,9 @@ class AbstractChosenOrderHandler
     return selection
 
 
-  # ////////////////////////////////////////////////////////////////
   # Change Chosen elements position to match the order
-  # @param force : boolean  Force the exact matching of the elements and the selection order
+  # @param selection [Array] the new ordered selection to display
+  # @return [Boolean] whether it succeeded or not
   setSelectionInOrder: (selection) ->
     unless @isValidMultipleSelectElement()
       @displayError('invalid_select_element', 'setSelectionInOrder')
