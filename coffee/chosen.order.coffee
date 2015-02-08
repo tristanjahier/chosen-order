@@ -14,20 +14,20 @@ class ChosenOrderHandlerBase
     notfound_chosen_container: "ChosenOrder::{{function}}: could not find the Chosen UI container! To solve the problem, try adding an \"id\" attribute to your <select> element."
 
 
-  # Construct a new handler
+  # Constructs a new handler
   # @param select [HTMLElement] The <select> element
   constructor: (@select) ->
 
 
-  # Helper function to output errors in the Javascript console
+  # Outputs an error in the Javascript console
   # @param errorName [String] The slug name of the error
   # @param functioName [String] The name of the function where it happens
   displayError: (errorName, functionName) ->
     console.error @ERRORS[errorName].replace('{{function}}', functionName)
 
 
-  # Check if one element is a valid multiple select
-  # @return [Boolean] whether the input element is valid or not
+  # Checks if the <select> element is a valid multiple <select>
+  # @return [Boolean] Whether the input element is valid or not
   isValidMultipleSelectElement: ->
     @select isnt null                          and
     typeof @select isnt "undefined"            and
@@ -35,9 +35,9 @@ class ChosenOrderHandlerBase
     @select.multiple?
 
 
-  # Flatten an array of <option> and <optgroup> to have the same relative indexes
-  # than Chosen UI
-  # @return [Array] a flattened array of options and option groups
+  # Transforms the children tree (options & optgroups) of the <select> element
+  # into a flat array to have the same relative indexes as Chosen
+  # @return [Array<HTMLElement>] A flattened array of options and option groups
   getFlattenedOptionsAndGroups: ->
     options = Array::filter.call @select.childNodes,
                                  (o) -> o.nodeName.toUpperCase() in ['OPTION', 'OPTGROUP']
@@ -55,8 +55,8 @@ class ChosenOrderHandlerBase
     return flattened_options
 
 
-  # Force the Chosen UI to display the given selection, without any notion of order
-  # @param selection [Array] an array of <option> values
+  # Forces the Chosen UI to display the given selection, without any notion of order
+  # @param selection [Array<String>] An array of <option> values
   forceSelection: (selection) ->
     options = @getFlattenedOptionsAndGroups()
     i = 0
@@ -72,17 +72,17 @@ class ChosenOrderHandlerBase
     @triggerEvent(@select, 'chosen:updated')
 
 
-  # Insert an element at a special position among the children of a node
-  # @param node [HTMLElement] the element to insert
-  # @param index [Integer] target position of the element
-  # @param parentNode [HTMLElement] parent element where element is inserted
+  # Inserts an element at a specific position among the children of another element
+  # @param node [HTMLElement] The element to insert
+  # @param index [Integer] Target position of the element
+  # @param parentNode [HTMLElement] Parent element in which it will be inserted
   insertAt: (node, index, parentNode) ->
     parentNode.insertBefore(node, parentNode.children[index].nextSibling)
 
 
-  # Retrieve the selection of the <select> element, in the order it appears
+  # Retrieves the selection of the <select> element, in the order it appears
   # visually in the Chosen UI
-  # @return [Array] ordered selection
+  # @return [Array<String>] The ordered selection
   getSelectionInOrder: ->
     selection = []
 
@@ -110,9 +110,9 @@ class ChosenOrderHandlerBase
     return selection
 
 
-  # Change Chosen elements position to match the order
-  # @param selection [Array] the new ordered selection to display
-  # @return [Boolean] whether it succeeded or not
+  # Changes Chosen UI selection to match the desired order
+  # @param selection [Array<String>] The new ordered selection to display
+  # @return [Boolean] Whether it succeeded or not
   setSelectionInOrder: (selection) ->
     unless @isValidMultipleSelectElement()
       @displayError('invalid_select_element', 'setSelectionInOrder')
