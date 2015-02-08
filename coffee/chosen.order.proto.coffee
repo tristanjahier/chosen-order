@@ -14,7 +14,11 @@ class @ChosenOrderHandler extends ChosenOrderHandlerBase
 
   # Retrieve the Chosen UI container corresponding to the <select> element
   getChosenUIContainer: () ->
-    @select.next('.chosen-container.chosen-container-multi')
+    # Quick and easy case
+    if @select.id isnt ""
+      document.getElementById @select.id.replace(/-/g, "_") + "_chosen"
+    else
+      @select.next('.chosen-container.chosen-container-multi')
 
   triggerEvent: (target, event_name) ->
     Event.fire $(target), event_name

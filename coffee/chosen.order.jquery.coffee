@@ -14,7 +14,10 @@ class @ChosenOrderHandler extends ChosenOrderHandlerBase
 
   # Retrieve the Chosen UI container corresponding to the <select> element
   getChosenUIContainer: () ->
-    if $(@select).data('chosen')?
+    # Quick and easy case
+    if @select.id isnt ""
+      document.getElementById @select.id.replace(/-/g, "_") + "_chosen"
+    else if $(@select).data('chosen')?
       $(@select).data('chosen').container[0]
     else
       $(@select).next('.chosen-container.chosen-container-multi').get(0)
