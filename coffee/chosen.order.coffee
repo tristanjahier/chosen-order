@@ -148,3 +148,18 @@ class ChosenOrderHandlerBase
       @insertAt(option, i, chosen_ui.querySelector('ul.chosen-choices'))
 
     return true
+
+
+# //////////////////////////////////////////////////////////////////////////////
+
+# Helper class
+# Provides two easy-to-use static functions
+class @ChosenOrder
+
+  @getSelectionInOrder: (element) ->
+    handler = new ChosenOrderHandler(element)
+    return handler.getSelectionInOrder()
+
+  @setSelectionInOrder: (element, selection) ->
+    handler = new ChosenOrderHandler(element)
+    return handler.setSelectionInOrder(selection)

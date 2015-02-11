@@ -28,16 +28,3 @@ class @ChosenOrderHandler extends ChosenOrderHandlerBase
   # @param eventName [String] The name of the event
   triggerEvent: (targetElement, eventName) ->
     $(targetElement).trigger eventName
-
-
-# Helper class
-# Provides two easy-to-use static functions
-class @ChosenOrder
-
-  @getSelectionInOrder: (element) ->
-    handler = new ChosenOrderHandler(element)
-    return handler.getSelectionInOrder()
-
-  @setSelectionInOrder: (element, selection) ->
-    handler = new ChosenOrderHandler(element)
-    return handler.setSelectionInOrder(selection)
