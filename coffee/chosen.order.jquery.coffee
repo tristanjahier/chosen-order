@@ -1,11 +1,3 @@
-# jQuery plugin
-$.fn.extend
-  getSelectionInOrder: ->
-    ChosenOrder.getSelectionInOrder this.get(0)
-  setSelectionInOrder: (selection) ->
-    ChosenOrder.setSelectionInOrder this.get(0), selection
-
-
 # jQuery version of the Chosen order handler
 # Adds the jQuery-specific part of the library
 class @ChosenOrderHandler extends ChosenOrderHandlerBase
@@ -28,3 +20,13 @@ class @ChosenOrderHandler extends ChosenOrderHandlerBase
   # @param eventName [String] The name of the event
   triggerEvent: (targetElement, eventName) ->
     $(targetElement).trigger eventName
+
+
+# //////////////////////////////////////////////////////////////////////////////
+
+# jQuery plugin
+$.fn.extend
+  getSelectionInOrder: ->
+    ChosenOrder.getSelectionInOrder this.get(0)
+  setSelectionInOrder: (selection) ->
+    ChosenOrder.setSelectionInOrder this.get(0), selection
