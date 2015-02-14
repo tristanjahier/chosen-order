@@ -139,6 +139,35 @@ It forces the selection of the values for the Select element and Chosen UI befor
 ![Chosen ordered elements](img/chosen_ordered.png)
 
 
+### Binding selection retrieval on Chosen `change` event
+
+If you try to retrieve the selection order as it changes by listening to the `change` event, you'll run into an issue. For example:
+
+```javascript
+$('#my_select').chosen().change(function() {
+    // Get selection and display...
+});
+```
+
+Every time you'll remove an element from the select, the last selection (before the removal) will be retrieved. Indeed, the callback is called before the DOM is actually updated and the option removed. That's why the script computes a false order. There is a *race condition*.
+
+[Demonstration of the problem](http://jsfiddle.net/9sfq9oqt/2)
+
+**@jgoyvaerts** reported this issue and shared a trick for this: simply use `setTimeout(myFunc, 0)` instead to move the call to the end of the event stack.
+
+```javascript
+$('#my_select').chosen().change(function() {
+    setTimeout(function() {
+        // Get selection and display...
+    }, 0);
+});
+```
+
+[Demonstration of the solution](http://jsfiddle.net/9sfq9oqt/1)
+
+*If you have a better solution for this issue, please contact me.*
+
+
 ## Technical aspects
 
 Chosen Order does several precaution checks on the arguments. It checks if the element is a correct **multiple select element, with a matching Chosen UI**. If this is not the case, it outputs an error in the console:
