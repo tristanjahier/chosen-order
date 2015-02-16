@@ -101,13 +101,13 @@ Chosen Order provides two public functions, in two flavors each.
 
 ```javascript
 // Functional flavor
-var selection = ChosenOrder.getSelectionOrder(document.getElementById('my-list'));
+var selection = ChosenOrder.getSelectionInOrder(document.getElementById('my-list'));
 
 // Object-oriented flavor, example for jQuery plugin
-var selection = $('#my-list').getSelectionOrder();
+var selection = $('#my-list').getSelectionInOrder();
 ```
 
-`getSelectionOrder()` takes no argument and **returns an array of the selected values** in the order they appear in Chosen UI.
+`getSelectionInOrder()` takes no argument and **returns an array of the selected values** in the order they appear in Chosen UI.
 For the above example, it should return `["fianle", "plop", "nioup"]`.
 
 
@@ -117,21 +117,19 @@ For the above example, it should return `["fianle", "plop", "nioup"]`.
 var order = ['nioup', 'plop', 'fianle']; // Ordered options values
 
 // Functional flavor
-ChosenOrder.setSelectionOrder($('#my-list'), order);
+ChosenOrder.setSelectionInOrder($('#my-list'), order);
 
 // Object-oriented flavor, example for jQuery plugin
-$('#my-list').setSelectionOrder(order);
+$('#my-list').setSelectionInOrder(order);
 ```
 
-`setSelectionOrder()` takes **an array of ordered values**.
-
-It also takes an optional argument : `force`, which is a boolean. Default value is `false`. Set it to `true` if you plan to pass an array of ordered values that are not necessarily all selected yet.
+`setSelectionInOrder()` takes **an array of ordered values**.
 
 For example, let's introduce *Cacatac* and *Ratacat-mic* and get rid of *Zorp*:
 
 ```javascript
 var order = ['cacatac', 'plop', 'ratacat-mic', 'fianle'];
-$('#my-list').setSelectionOrder(order, true);
+$('#my-list').setSelectionInOrder(order);
 ```
 
 It forces the selection of the values for the Select element and Chosen UI before ordering them.
@@ -172,17 +170,17 @@ $('#my_select').chosen().change(function() {
 
 Chosen Order does several precaution checks on the arguments. It checks if the element is a correct **multiple select element, with a matching Chosen UI**. If this is not the case, it outputs an error in the console:
 
-	ChosenOrder::getSelectionOrder: first argument must be a valid HTML Multiple Select element that has been Chosenified!
+	ChosenOrder::getSelectionInOrder: first argument must be a valid HTML Multiple Select element that has been Chosenified!
 
 It also checks if the order array is a true Array object, else, it screams:
 
-	ChosenOrder::setSelectionOrder: second argument must be an Array!
+	ChosenOrder::setSelectionInOrder: second argument must be an Array!
 
 Chosen Order handles both DOM raw elements and jQuery objects. For example, these 2 lines will work:
 
 ```javascript
-ChosenOrder.getSelectionOrder(document.getElementById('my-list'));
-ChosenOrder.getSelectionOrder($('#my-list'));
+ChosenOrder.getSelectionInOrder(document.getElementById('my-list'));
+ChosenOrder.getSelectionInOrder($('#my-list'));
 ```
 
-`setSelectionOrder()` trims the values of the order array.
+`setSelectionInOrder()` trims the values of the order array.
