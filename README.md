@@ -1,26 +1,25 @@
-# Chosen order plugin
+# Chosen Order plug-in
 
-Chosen Order is a plugin for Chosen which aims to provide functions to handle the order of the selection.
+Chosen Order is a plugin for [Chosen](https://github.com/harvesthq/chosen) which lets you handle the order of selection.
 
-Typically, you may want to retrieve the order in which the elements were selected with Chosen. You also may want to force the order in which Chosen displays the selected options. Unfortunately, Chosen does not handle that, because DOM Multiple Select elements do not have any notion of order of selection.
+Typically, when using a multiple `<select>` element with Chosen, you may want to retrieve the selection in the order the options were selected. You may also want to force the selection in a specific order. Unfortunately, this is not natively possible with Chosen ([more info here](https://github.com/harvesthq/chosen/issues/1847)). Chosen Order does the job.
 
 Created by [Tristan Jahier](http://tristan-jahier.fr).
 
-
--------------------------
+---
 
 THIS SOFTWARE IS NOT ASSOCIATED WITH **HARVEST** IN ANY WAY.
 
 Chosen is a library originally created by [Patrick Filler](http://patrickfiller.com) for [Harvest](http://getharvest.com/).
 
--------------------------
+---
 
 
 ## Compatibility
 
+- Chosen : `1.0.0+`
 - jQuery : `1.4+`
 - Prototype : `1.7.1+`
-- Chosen : `1.0.0+`
 
 ### Internet Explorer 8
 
@@ -34,38 +33,35 @@ Chosen Order is now compatible with IE8, but you'll still need to add the [es5-s
 
 ## Demo
 
-You can see a demonstration of the plugin at : [http://labo.tristan-jahier.fr/chosen_order](http://labo.tristan-jahier.fr/chosen_order)
+You can see a live demonstration of the plugin at : [http://labo.tristan-jahier.fr/chosen_order](http://labo.tristan-jahier.fr/chosen_order)
 
-#### Hey! Demo in the `public/` directory does not work!!!
+#### Hey! Demo in `public` directory does not work!!!
 
-Use the `grunt` command to compile the project, and a task will fill this directory with the freshly built Javascript files.
+This is probably because you browser cannot find the JavaScript files. Indeed, there is no compiled sources in this repository. You must use the `grunt` command to compile the project, and a task will fill this directory with the freshly built JavaScript files.
 
-If you have no idea what I'm talking about, just copy `chosen.order.jquery.min.js` and `chosen.order.proto.min.js` from `dist/` to `public/`.
+If you have no idea what I'm talking about, just download a release package of Chosen Order.
 
 #### JsFiddle
 
-For demonstration purpose, there is also 2 live demonstrations on JsFiddle:
+For demonstration purpose, there is also 2 live examples on JsFiddle:
 
 - jQuery: [http://jsfiddle.net/oj3cjw9w](http://jsfiddle.net/oj3cjw9w)
-- PrototypeJs: [http://jsfiddle.net/ch5bjh53](http://jsfiddle.net/ch5bjh53)
+- Prototype: [http://jsfiddle.net/ch5bjh53](http://jsfiddle.net/ch5bjh53)
+
 
 ## Usage
 
-Download the compiled Javascript files (development and minified versions are available) from the `dist/` directory, or compile the project yourself.
+Download a release package of Chosen Order to get the compiled JavaScript files (development and minified versions are available), or compile the project yourself with Grunt.
 
-Import the Javascript file in your HTML document. Choose the version which corresponds to the framework of your choice: jQuery or Prototype.
+Firstly, import the version corresponding to the framework of your choice:
 
 ```html
 <script type="text/javascript" src="chosen.order.jquery.min.js"></script>
-```
-
-or
-
-```html
+<!-- OR -->
 <script type="text/javascript" src="chosen.order.proto.min.js"></script>
 ```
 
-Let's say you have a select element into your page, which is handled by Chosen:
+For example, let's say you have this `<select>` element in your document, which is handled by Chosen:
 
 ```html
 <select id="my-list" multiple>
@@ -79,62 +75,58 @@ Let's say you have a select element into your page, which is handled by Chosen:
 </select>
 ```
 
-So, you have 3 values selected : *Fianle*, *Plop* and *Nioup*. Chosen UI displays them in the order they are declared into the DOM:
+There are 3 options selected. By default, Chosen displays them in the order they are declared in the DOM:
 
-![Chosen unordered elements](img/chosen_unordered.png)
+![Chosen Order example 1](img/chosen_unordered.png)
 
-Chosen Order provides two public functions, in two flavors each.
+---
 
-- **Functional flavor** is a direct call to ChosenOrder static functions.
+For each of the following public API methods, you have 2 ways to access it:
 
-	```javascript
-	ChosenOrder.theFreakingFunction(element, params);
-	```
-
-- **Object-oriented flavor** is another approach that extends the objects.
+- **Static helper** (direct call to the static helper class `ChosenOrder`)
 
 	```javascript
-	$(element).theFreakingFunction(params);
+	ChosenOrder.myAwesomeFunction(element, params);
 	```
+
+- **Object-oriented** (use the framework object extension system – example with jQuery here)
+
+	```javascript
+	$(element).myAwesomeFunction(params);
+	```
+
+---
+
 
 ### Retrieving the order
 
-```javascript
-// Functional flavor
-var selection = ChosenOrder.getSelectionInOrder(document.getElementById('my-list'));
+`getSelectionInOrder()` returns an array of the selected option values in the order they appear visually.
 
-// Object-oriented flavor, example for jQuery plugin
+```javascript
+// Static
+var selection = ChosenOrder.getSelectionInOrder(document.getElementById('my-list'));
+// Object-oriented – example with jQuery
 var selection = $('#my-list').getSelectionInOrder();
 ```
 
-`getSelectionInOrder()` takes no argument and **returns an array of the selected values** in the order they appear in Chosen UI.
-For the above example, it should return `["fianle", "plop", "nioup"]`.
+In the example above, it should return `["fianle", "plop", "nioup"]`.
 
 
 ### Setting the order
 
-```javascript
-var order = ['nioup', 'plop', 'fianle']; // Ordered options values
-
-// Functional flavor
-ChosenOrder.setSelectionInOrder($('#my-list'), order);
-
-// Object-oriented flavor, example for jQuery plugin
-$('#my-list').setSelectionInOrder(order);
-```
-
-`setSelectionInOrder()` takes **an array of ordered values**.
-
-For example, let's introduce *Cacatac* and *Ratacat-mic* and get rid of *Zorp*:
+`setSelectionInOrder()` takes an array of option values.
 
 ```javascript
-var order = ['cacatac', 'plop', 'ratacat-mic', 'fianle'];
-$('#my-list').setSelectionInOrder(order);
+var selection = ["cacatac", "plop", "ratacat-mic", "fianle"]; // Ordered option values
+
+// Static
+ChosenOrder.setSelectionInOrder(document.getElementById('my-list'), selection);
+// Object-oriented – example with jQuery
+$('#my-list').setSelectionInOrder(selection);
 ```
 
-It forces the selection of the values for the Select element and Chosen UI before ordering them.
-
-![Chosen ordered elements](img/chosen_ordered.png)
+In the example above, the Chosen UI should now display something like this:
+![Chosen Order example 2](img/chosen_ordered.png)
 
 
 ### Binding selection retrieval on Chosen `change` event
@@ -164,23 +156,3 @@ $('#my_select').chosen().change(function() {
 [Demonstration of the solution](http://jsfiddle.net/9sfq9oqt/1)
 
 *If you have a better solution for this issue, please contact me.*
-
-
-## Technical aspects
-
-Chosen Order does several precaution checks on the arguments. It checks if the element is a correct **multiple select element, with a matching Chosen UI**. If this is not the case, it outputs an error in the console:
-
-	ChosenOrder::getSelectionInOrder: first argument must be a valid HTML Multiple Select element that has been Chosenified!
-
-It also checks if the order array is a true Array object, else, it screams:
-
-	ChosenOrder::setSelectionInOrder: second argument must be an Array!
-
-Chosen Order handles both DOM raw elements and jQuery objects. For example, these 2 lines will work:
-
-```javascript
-ChosenOrder.getSelectionInOrder(document.getElementById('my-list'));
-ChosenOrder.getSelectionInOrder($('#my-list'));
-```
-
-`setSelectionInOrder()` trims the values of the order array.
