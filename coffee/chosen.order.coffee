@@ -9,9 +9,9 @@ class ChosenOrderHandlerBase
   # Errors collection. Contains all error messages output by the script.
   # Static member (shared by every instance)
   ERRORS:
-    invalid_select_element:    "ChosenOrder::{{function}}: first argument must be a valid HTML Multiple Select element that has been Chosenified!"
-    invalid_selection_array:   "ChosenOrder::{{function}}: second argument must be an Array!"
-    notfound_chosen_container: "ChosenOrder::{{function}}: could not find the Chosen UI container! To solve the problem, try adding an \"id\" attribute to your <select> element."
+    invalid_select_element:    "ChosenOrder::{{function}}: 1st argument is not a valid chosenified multiple <select>!"
+    invalid_selection_array:   "ChosenOrder::{{function}}: 2nd argument is not an Array!"
+    notfound_chosen_container: "ChosenOrder::{{function}}: could not find the Chosen UI container. Try to add an \"id\" on the <select>."
 
 
   # Constructs a new handler
