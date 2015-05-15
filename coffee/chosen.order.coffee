@@ -5,6 +5,7 @@ class AbstractChosenOrder
     invalid_select_element: "ChosenOrder::{{function}}: first argument must be a valid HTML Multiple Select element that has been Chosenified!",
     invalid_selection_array: "ChosenOrder::{{function}}: second argument must be an Array!",
     unreachable_chosen_container: "ChosenOrder::{{function}}: could not find the Chosen UI container! To solve the problem, try adding an \"id\" attribute to your <select> element."
+    ordering_unselected_option: "ChosenOrder::{{function}}: ignoring option '{{option}}' which is not selected. Set optional parameter \"force\" to 'true' to get the ordered selection forced first."
   }
 
   # ////////////////////////////////////////////////////////////////
@@ -141,6 +142,12 @@ class AbstractChosenOrder
         option = Array::filter.call(chosen_options, (o) ->
           o.querySelector("a.search-choice-close[" + relAttributeName + "=\"" + rel + "\"]")?
         )[0]
+
+        unless option?
+          console.warn ERRORS.ordering_unselected_option.replace('{{function}}', 'setSelectionOrder')
+                                                        .replace('{{option}}', opt_val)
+          continue
+
         chosen_choices = chosen_ui.querySelector("ul.chosen-choices")
         @insertAt option, i, chosen_ui.querySelector('ul.chosen-choices')
 
