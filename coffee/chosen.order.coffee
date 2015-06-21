@@ -80,6 +80,19 @@ class ChosenOrderHandlerBase
     parentNode.insertBefore(node, parentNode.children[index].nextSibling)
 
 
+  # Triggers a custom event on a DOM element
+  # @param targetElement [HTMLElement] The element to fire the event on
+  # @param eventName [String] The name of the event
+  triggerEvent: (targetElement, eventName) ->
+    if document.createEvent
+      evt = document.createEvent 'HTMLEvents'
+      evt.initEvent(eventName, false, true)
+      targetElement.dispatchEvent(evt)
+    else
+      evt = document.createEventObject()
+      targetElement.fireEvent("on#{eventName}", evt)
+
+
   # Retrieves the selection of the <select> element, in the order it appears
   # visually in the Chosen UI
   # @return [Array<String>] The ordered selection
