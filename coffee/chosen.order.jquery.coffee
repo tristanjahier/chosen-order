@@ -4,16 +4,13 @@ class @ChosenOrderHandler extends ChosenOrderHandlerBase
 
   relAttributeName: "data-option-array-index"
 
-  # Retrieve the Chosen UI container corresponding to the <select> element
+  # Retrieves the Chosen UI container corresponding to the <select> element
   # @return [HTMLElement] The container of the Chosen multiselect UI
   getChosenUIContainer: ->
-    # Quick and easy case
-    if @select.id isnt ""
-      document.getElementById @select.id.replace(/-/g, "_") + "_chosen"
-    else if $(@select).data('chosen')?
+    if $(@select).data('chosen')?
       $(@select).data('chosen').container[0]
     else
-      $(@select).next('.chosen-container.chosen-container-multi').get(0)
+      super()
 
   # Triggers a custom event on a DOM element
   # @param targetElement [HTMLElement] The element to fire the event on

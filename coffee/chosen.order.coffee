@@ -19,6 +19,12 @@ class ChosenOrderHandlerBase
   constructor: (@select) ->
 
 
+  # Checks if an element has a class
+  # @return [Boolean] Whether the class is present or not
+  hasClass: (element, className) ->
+    ~ " #{element.className} ".indexOf(" #{className} ")
+
+
   # Outputs an error in the Javascript console
   # @param errorName [String] The slug name of the error
   # @param functioName [String] The name of the function where it happens
@@ -33,6 +39,18 @@ class ChosenOrderHandlerBase
     typeof @select isnt "undefined"            and
     @select.nodeName.toUpperCase() is "SELECT" and
     @select.multiple?
+
+
+  # Retrieves the Chosen UI container corresponding to the <select> element
+  # @return [HTMLElement] The container of the Chosen multiselect UI
+  getChosenUIContainer: ->
+    # Quick and easy case
+    if @select.id isnt ''
+      document.getElementById @select.id.replace(/-/g, '_') + '_chosen'
+    # The container is most likely the next sibling
+    else if @hasClass(@select.nextSibling, 'chosen-container') and
+            @hasClass(@select.nextSibling, 'chosen-container-multi')
+      @select.nextSibling
 
 
   # Transforms the children tree (options & optgroups) of the <select> element
