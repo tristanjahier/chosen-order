@@ -32,6 +32,27 @@ class ChosenOrderHandlerBase
     console.error @ERRORS[errorName].replace('{{function}}', functionName)
 
 
+  # Inserts an element at a specific position among the children of another element
+  # @param node [HTMLElement] The element to insert
+  # @param index [Integer] Target position of the element
+  # @param parentNode [HTMLElement] Parent element in which it will be inserted
+  insertAt: (node, index, parentNode) ->
+    parentNode.insertBefore(node, parentNode.children[index].nextSibling)
+
+
+  # Triggers a custom event on a DOM element
+  # @param targetElement [HTMLElement] The element to fire the event on
+  # @param eventName [String] The name of the event
+  triggerEvent: (targetElement, eventName) ->
+    if document.createEvent
+      evt = document.createEvent 'HTMLEvents'
+      evt.initEvent(eventName, false, true)
+      targetElement.dispatchEvent(evt)
+    else
+      evt = document.createEventObject()
+      targetElement.fireEvent("on#{eventName}", evt)
+
+
   # Checks if the <select> element is a valid multiple <select>
   # @return [Boolean] Whether the input element is valid or not
   isValidMultipleSelectElement: ->
@@ -88,27 +109,6 @@ class ChosenOrderHandlerBase
         opt.removeAttribute 'selected'
       i++
     @triggerEvent(@select, 'chosen:updated')
-
-
-  # Inserts an element at a specific position among the children of another element
-  # @param node [HTMLElement] The element to insert
-  # @param index [Integer] Target position of the element
-  # @param parentNode [HTMLElement] Parent element in which it will be inserted
-  insertAt: (node, index, parentNode) ->
-    parentNode.insertBefore(node, parentNode.children[index].nextSibling)
-
-
-  # Triggers a custom event on a DOM element
-  # @param targetElement [HTMLElement] The element to fire the event on
-  # @param eventName [String] The name of the event
-  triggerEvent: (targetElement, eventName) ->
-    if document.createEvent
-      evt = document.createEvent 'HTMLEvents'
-      evt.initEvent(eventName, false, true)
-      targetElement.dispatchEvent(evt)
-    else
-      evt = document.createEventObject()
-      targetElement.fireEvent("on#{eventName}", evt)
 
 
   # Retrieves the selection of the <select> element, in the order it appears
