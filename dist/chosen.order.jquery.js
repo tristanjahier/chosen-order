@@ -61,7 +61,7 @@
 
     AbstractChosenOrder.getChosenUIContainer = function(select) {
       if (select.id !== "") {
-        return document.getElementById(select.id.replace(/-/g, "_") + "_chosen");
+        return document.getElementById(select.id.replace(/-/g, "_") + "_chzn");
       } else {
         return this.searchChosenUIContainer(select);
       }
@@ -86,7 +86,7 @@
         }
         i++;
       }
-      return this.triggerEvent(select, "chosen:updated");
+      return this.triggerEvent(select, "liszt:updated");
     };
 
     AbstractChosenOrder.getSelectionOrder = function(select) {
@@ -157,8 +157,8 @@
             console.warn(ERRORS.ordering_unselected_option.replace('{{function}}', 'setSelectionOrder').replace('{{option}}', opt_val));
             continue;
           }
-          chosen_choices = chosen_ui.querySelector("ul.chosen-choices");
-          _results.push(this.insertAt(option, i, chosen_ui.querySelector('ul.chosen-choices')));
+          chosen_choices = chosen_ui.querySelector("ul.chzn-choices");
+          _results.push(this.insertAt(option, i, chosen_ui.querySelector('ul.chzn-choices')));
         }
         return _results;
       } else {
@@ -189,7 +189,7 @@
       return _ref;
     }
 
-    ChosenOrder.relAttributeName = 'data-option-array-index';
+    ChosenOrder.relAttributeName = 'rel';
 
     ChosenOrder.isjQueryObject = function(obj) {
       return (typeof jQuery !== "undefined" && jQuery !== null) && obj instanceof jQuery;
@@ -207,7 +207,7 @@
       if ($(element).data("chosen") != null) {
         return $(element).data("chosen").container[0];
       } else {
-        return $(element).next(".chosen-container.chosen-container-multi").get(0);
+        return $(element).next(".chzn-container.chzn-container-multi").get(0);
       }
     };
 
